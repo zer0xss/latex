@@ -2,3345 +2,1462 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MathForge</title>
 
 <script>
 window.MathJax = {
-    tex: {
-        inlineMath: [
-            ['\\(', '\\)']
-        ],
-
-        displayMath: [
-            ['\\[', '\\]']
-        ],
-
-        processEscapes: false,
-        processEnvironments: true,
-
-        packages: {
-            '[+]': [
-                'base',
-                'ams',
-                'newcommand',
-                'noundefined'
-            ]
-        }
-    },
-
-    options: {
-        skipHtmlTags: [
-            'script',
-            'noscript',
-            'style',
-            'textarea',
-            'pre',
-            'code'
-        ]
-    },
-
-    svg: {
-        fontCache: 'global'
-    }
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']],
+    processEscapes: false,
+    processEnvironments: true
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  },
+  svg: {
+    fontCache: 'global'
+  }
 };
 </script>
 
-<script
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-    async>
-</script>
-
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+:root{
+  --bg:#f5f6f8;
+  --panel:#fff;
+  --text:#171717;
+  --muted:#737373;
+  --border:#ddd;
+  --accent:#4f46e5;
+  --danger:#ef4444;
 }
 
-:root {
-    --bg: #f4f5f7;
-    --panel: #ffffff;
-    --text: #171717;
-    --muted: #777;
-    --border: #dddddd;
-    --accent: #4f46e5;
-    --danger: #ef4444;
-    --success: #16a34a;
+body.dark{
+  --bg:#111216;
+  --panel:#191a1f;
+  --text:#f5f5f5;
+  --muted:#aaa;
+  --border:#30323a;
 }
 
-body.dark {
-    --bg: #111216;
-    --panel: #191a1f;
-    --text: #f5f5f5;
-    --muted: #a1a1aa;
-    --border: #30323a;
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;
 }
 
-body {
-    margin: 0;
-
-    background: var(--bg);
-    color: var(--text);
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans KR",
-        sans-serif;
+header{
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-header {
-    height: 56px;
-
-    background: var(--panel);
-
-    border-bottom:
-        1px solid var(--border);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 14px;
-
-    position: sticky;
-    top: 0;
-
-    z-index: 20;
+.logo{
+  font-size:19px;
+  font-weight:800;
 }
 
-.logo {
-    font-size: 19px;
-    font-weight: 800;
+.logo span{color:var(--accent)}
+
+.header-right{
+  display:flex;
+  gap:7px;
+  align-items:center;
 }
 
-.logo span {
-    color: var(--accent);
+button{font:inherit}
+
+.btn{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  padding:8px 11px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+.btn:hover{border-color:var(--accent)}
+
+.primary{
+  background:var(--accent);
+  color:white;
+  border-color:var(--accent);
 }
 
-
-/* =====================================================
-   BUTTON
-===================================================== */
-
-button {
-    font: inherit;
+.status{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:11px;
+  color:var(--muted);
 }
 
-.btn {
-    border:
-        1px solid var(--border);
-
-    background: var(--panel);
-    color: var(--text);
-
-    padding:
-        8px 11px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#16a34a;
 }
 
-.btn:hover {
-    border-color: var(--accent);
+.dot.dirty{background:#f59e0b}
+
+.layout{
+  max-width:1500px;
+  margin:auto;
+  padding:8px;
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr) minmax(0,1fr);
+  gap:7px;
 }
 
-.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
 }
 
-
-/* =====================================================
-   SAVE STATUS
-===================================================== */
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    color: var(--muted);
-
-    font-size: 11px;
+.panel-header{
+  height:45px;
+  padding:0 13px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-.dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: var(--success);
+.title{
+  font-size:14px;
+  font-weight:750;
 }
 
-.dot.dirty {
-    background: #f59e0b;
+.panel-body{padding:12px}
+
+.field{margin-bottom:12px}
+
+label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
 }
 
-
-/* =====================================================
-   MAIN LAYOUT
-===================================================== */
-
-.layout {
-
-    max-width: 1500px;
-
-    margin: 0 auto;
-
-    padding: 7px;
-
-    display: grid;
-
-    /*
-       문제 목록 / 입력 / 미리보기
-
-       입력과 미리보기 사이를
-       거의 붙여놓음
-    */
-
-    grid-template-columns:
-        185px
-        minmax(0, 1fr)
-        minmax(0, 1fr);
-
-    gap: 4px;
+input,textarea{
+  width:100%;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:9px;
+  outline:none;
 }
 
-
-/* =====================================================
-   PANEL
-===================================================== */
-
-.panel {
-
-    background: var(--panel);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 9px;
-
-    overflow: hidden;
+input:focus,textarea:focus{
+  border-color:var(--accent);
 }
 
-.panel-header {
-
-    height: 44px;
-
-    padding:
-        0 12px;
-
-    border-bottom:
-        1px solid var(--border);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
 }
 
-.title {
-    font-size: 14px;
-    font-weight: 750;
+#question{
+  min-height:500px;
+  resize:vertical;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px;
+  line-height:1.8;
 }
 
-.panel-body {
-    padding: 10px;
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-bottom:6px;
 }
 
-
-/* =====================================================
-   INPUT
-===================================================== */
-
-.field {
-    margin-bottom: 10px;
+.tool{
+  border:1px solid var(--border);
+  background:var(--bg);
+  color:var(--text);
+  border-radius:6px;
+  padding:6px 9px;
+  cursor:pointer;
+  font-size:12px;
 }
 
-label {
-    display: block;
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-    margin-bottom: 5px;
+.tool:hover{
+  color:var(--accent);
+  border-color:var(--accent);
 }
 
-input,
-textarea {
-
-    width: 100%;
-
-    background: var(--panel);
-
-    color: var(--text);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 7px;
-
-    padding: 8px;
-
-    outline: none;
+.preview{
+  min-height:650px;
+  padding:20px;
+  overflow-x:auto;
+  font-size:17px;
+  line-height:2;
 }
 
-input:focus,
-textarea:focus {
-
-    border-color:
-        var(--accent);
+.preview-line{
+  min-height:1.8em;
+  white-space:normal;
 }
 
-.row {
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 6px;
+.problem-list{
+  max-height:calc(100vh - 105px);
+  overflow-y:auto;
 }
 
+.search{margin-bottom:8px}
 
-/* =====================================================
-   QUESTION EDITOR
-===================================================== */
-
-#question {
-
-    min-height: 570px;
-
-    resize: vertical;
-
-    font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Consolas,
-        monospace;
-
-    font-size: 14px;
-
-    line-height: 1.75;
-
-    tab-size: 4;
+.problem{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
 }
 
+.problem:hover{background:var(--bg)}
 
-/* =====================================================
-   TOOLBAR
-===================================================== */
-
-.toolbar {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 4px;
-
-    margin-bottom: 5px;
+.problem.active{
+  background:rgba(79,70,229,.1);
 }
 
-.tool {
-
-    border:
-        1px solid var(--border);
-
-    background: var(--bg);
-
-    color: var(--text);
-
-    border-radius: 6px;
-
-    padding:
-        5px 8px;
-
-    cursor: pointer;
-
-    font-size: 11px;
+.problem-title{
+  font-size:13px;
+  font-weight:700;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
 
-.tool:hover {
-
-    border-color:
-        var(--accent);
-
-    color:
-        var(--accent);
+.problem-meta{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
 }
 
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-.preview {
-
-    min-height: 700px;
-
-    padding:
-        16px 18px;
-
-    overflow-x: auto;
-
-    font-size: 17px;
-
-    line-height: 1.9;
+.types{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
 }
 
-.preview-content {
-
-    white-space: normal;
-
-    word-break: break-word;
+.type{
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:var(--panel);
+  color:var(--text);
+  cursor:pointer;
 }
 
-.preview-line {
-
-    min-height: 1.9em;
-
-    white-space: normal;
+.type.active{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
 }
 
-
-/*
-   MathJax 오류 표시
-*/
-
-mjx-merror {
-
-    color:
-        var(--danger) !important;
-
-    font-size: 0.9em !important;
+.choice-row{
+  display:flex;
+  gap:6px;
+  margin-bottom:6px;
+  align-items:center;
 }
 
+.choice-row input[type=text]{flex:1}
 
-/* =====================================================
-   PROBLEM LIST
-===================================================== */
-
-.problem-list {
-
-    max-height:
-        calc(100vh - 100px);
-
-    overflow-y: auto;
+.choice-row input[type=radio]{
+  width:auto;
 }
 
-.search {
-    margin-bottom: 5px;
+.remove{
+  width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--danger);
+  border-radius:7px;
+  cursor:pointer;
 }
 
-.problem {
-
-    padding:
-        9px 10px;
-
-    border-bottom:
-        1px solid var(--border);
-
-    cursor: pointer;
+.choices-preview{
+  margin-top:25px;
+  display:flex;
+  flex-direction:column;
+  gap:13px;
 }
 
-.problem:hover {
-    background: var(--bg);
+.choice-preview{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
 }
 
-.problem.active {
-
-    background:
-        rgba(79,70,229,.1);
+.choice-number{
+  width:25px;
+  min-width:25px;
+  height:25px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
 }
 
-.problem-title {
+.hidden{display:none}
 
-    font-size: 12px;
-
-    font-weight: 700;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translate(-50%,20px);
+  opacity:0;
+  background:#222;
+  color:#fff;
+  padding:10px 15px;
+  border-radius:8px;
+  transition:.2s;
+  pointer-events:none;
+  z-index:100;
 }
 
-.problem-meta {
-
-    color: var(--muted);
-
-    font-size: 10px;
-
-    margin-top: 3px;
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
-
-/* =====================================================
-   TYPE
-===================================================== */
-
-.types {
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 4px;
+.math-error{
+  color:var(--danger);
+  text-decoration:underline wavy var(--danger);
 }
 
-.type {
+@media(max-width:1100px){
+  .layout{
+    grid-template-columns:200px minmax(0,1fr);
+  }
 
-    padding: 7px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 6px;
-
-    background:
-        var(--panel);
-
-    color:
-        var(--text);
-
-    cursor: pointer;
-
-    font-size: 12px;
+  .preview-panel{
+    grid-column:1/-1;
+  }
 }
 
-.type.active {
+@media(max-width:700px){
+  .layout{
+    display:flex;
+    flex-direction:column;
+  }
 
-    background:
-        var(--accent);
-
-    border-color:
-        var(--accent);
-
-    color:
-        white;
+  .preview-panel{order:3}
 }
-
-
-/* =====================================================
-   CHOICES
-===================================================== */
-
-.choice-row {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    margin-bottom: 5px;
-}
-
-.choice-row input[type="radio"] {
-
-    width: auto;
-}
-
-.choice-input {
-    flex: 1;
-}
-
-.remove {
-
-    width: 30px;
-    height: 32px;
-
-    border:
-        1px solid var(--border);
-
-    background: transparent;
-
-    color:
-        var(--danger);
-
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   CHOICE PREVIEW
-===================================================== */
-
-.choices-preview {
-
-    margin-top: 22px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-}
-
-.choice-preview {
-
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 9px;
-}
-
-.choice-number {
-
-    width: 25px;
-    height: 25px;
-
-    min-width: 25px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 11px;
-}
-
-
-/* =====================================================
-   HIDDEN
-===================================================== */
-
-.hidden {
-    display: none;
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-.toast {
-
-    position: fixed;
-
-    bottom: 20px;
-
-    left: 50%;
-
-    transform:
-        translate(-50%, 20px);
-
-    opacity: 0;
-
-    background: #222;
-
-    color: white;
-
-    padding:
-        9px 14px;
-
-    border-radius: 8px;
-
-    transition: .2s;
-
-    pointer-events: none;
-
-    z-index: 100;
-}
-
-.toast.show {
-
-    opacity: 1;
-
-    transform:
-        translate(-50%, 0);
-}
-
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media(max-width:1050px) {
-
-    .layout {
-
-        grid-template-columns:
-            180px
-            minmax(0, 1fr);
-    }
-
-    .preview-panel {
-
-        grid-column:
-            1 / -1;
-    }
-}
-
-@media(max-width:700px) {
-
-    .layout {
-
-        display: flex;
-
-        flex-direction: column;
-    }
-
-    .preview-panel {
-        order: 3;
-    }
-
-}
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header>
+  <div class="logo">Math<span>Forge</span></div>
 
-    <div class="logo">
-        Math<span>Forge</span>
+  <div class="header-right">
+    <div class="status" id="status">
+      <span class="dot"></span>
+      <span>저장됨</span>
     </div>
 
-    <div class="header-right">
-
-        <div
-            class="status"
-            id="status">
-
-            <span class="dot"></span>
-
-            <span>
-                저장됨
-            </span>
-
-        </div>
-
-        <button
-            class="btn"
-            onclick="newProblem()">
-
-            ＋ 새 문제
-
-        </button>
-
-        <button
-            class="btn"
-            onclick="toggleDark()">
-
-            ◐
-
-        </button>
-
-    </div>
-
+    <button class="btn" onclick="newProblem()">＋ 새 문제</button>
+    <button class="btn" onclick="toggleDark()">◐</button>
+  </div>
 </header>
-
-
-<!-- =====================================================
-     LAYOUT
-===================================================== -->
 
 <div class="layout">
 
+<section class="panel">
 
-<!-- =====================================================
-     PROBLEM LIST
-===================================================== -->
+  <div class="panel-header">
+    <div class="title">문제</div>
+    <button class="btn" onclick="newProblem()">＋</button>
+  </div>
+
+  <div class="panel-body">
+    <input id="search" class="search" placeholder="문제 검색">
+  </div>
+
+  <div id="problemList" class="problem-list"></div>
+
+</section>
+
 
 <section class="panel">
 
-    <div class="panel-header">
+  <div class="panel-header">
+    <div class="title">문제 입력</div>
+  </div>
 
-        <div class="title">
-            문제
-        </div>
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="field">
+        <label>번호</label>
+        <input id="number" type="number">
+      </div>
+
+      <div class="field">
+        <label>배점</label>
+        <input id="score" type="number">
+      </div>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>문제 유형</label>
+
+      <div class="types">
 
         <button
-            class="btn"
-            onclick="newProblem()">
-
-            ＋
-
+          id="multiple"
+          class="type active"
+          onclick="setType('multiple')">
+          객관식
         </button>
 
+        <button
+          id="short"
+          class="type"
+          onclick="setType('short')">
+          주관식
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>문제</label>
+
+      <div class="toolbar">
+
+        <button class="tool" onclick="insertAtCursor('\\frac{}{}')">
+          분수
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('\\sqrt{}')">
+          √
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('\\lim_{n\\to\\infty}')">
+          lim
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('\\sum_{k=1}^{n}')">
+          Σ
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('\\int_0^1')">
+          ∫
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('x^2')">
+          x²
+        </button>
+
+        <button class="tool" onclick="insertAtCursor('\\pi')">
+          π
+        </button>
+
+      </div>
+
+      <textarea
+        id="question"
+        spellcheck="false"
+        placeholder="문제를 입력하세요."
+      ></textarea>
+
     </div>
 
 
-    <div class="panel-body">
+    <div id="choiceArea" class="field">
 
-        <input
-            id="search"
-            class="search"
-            placeholder="문제 검색">
+      <label>선택지</label>
+
+      <div id="choices"></div>
+
+      <button class="btn" onclick="addChoice()">
+        ＋ 선택지
+      </button>
+
+    </div>
+
+
+    <div id="answerArea" class="field hidden">
+
+      <label>정답</label>
+
+      <input id="answer" placeholder="정답">
 
     </div>
 
 
-    <div
-        id="problemList"
-        class="problem-list">
+    <div style="display:flex;gap:6px">
+
+      <button class="btn primary" onclick="save(true)">
+        저장
+      </button>
+
+      <button class="btn" onclick="duplicate()">
+        복제
+      </button>
+
+      <button class="btn" onclick="removeProblem()">
+        삭제
+      </button>
 
     </div>
+
+  </div>
 
 </section>
 
 
-<!-- =====================================================
-     EDITOR
-===================================================== -->
+<section class="panel preview-panel">
 
-<section class="panel">
+  <div class="panel-header">
 
-    <div class="panel-header">
+    <div class="title">미리보기</div>
 
-        <div class="title">
-            문제 입력
-        </div>
-
+    <div style="font-size:11px;color:#16a34a">
+      LIVE
     </div>
 
+  </div>
 
-    <div class="panel-body">
-
-
-        <!-- 번호 / 배점 -->
-
-        <div class="row">
-
-            <div class="field">
-
-                <label>
-                    번호
-                </label>
-
-                <input
-                    id="number"
-                    type="number">
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    배점
-                </label>
-
-                <input
-                    id="score"
-                    type="number">
-
-            </div>
-
-        </div>
-
-
-        <!-- 유형 -->
-
-        <div class="field">
-
-            <label>
-                문제 유형
-            </label>
-
-
-            <div class="types">
-
-                <button
-                    id="multiple"
-                    class="type active"
-                    onclick="setType('multiple')">
-
-                    객관식
-
-                </button>
-
-
-                <button
-                    id="short"
-                    class="type"
-                    onclick="setType('short')">
-
-                    주관식
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 문제 -->
-
-        <div class="field">
-
-            <label>
-                문제
-            </label>
-
-
-            <div class="toolbar">
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\frac{}{}')">
-
-                    frac
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\sqrt{}')">
-
-                    √
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\lim_{n\\to\\infty}')">
-
-                    lim
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\sum_{k=1}^{n}')">
-
-                    Σ
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\int_0^1')">
-
-                    ∫
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('x^2')">
-
-                    x²
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('x_n')">
-
-                    xₙ
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\pi')">
-
-                    π
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\infty')">
-
-                    ∞
-
-                </button>
-
-
-                <button
-                    class="tool"
-                    onclick="insertAtCursor('\\to')">
-
-                    →
-
-                </button>
-
-
-            </div>
-
-
-            <textarea
-                id="question"
-                spellcheck="false"
-                placeholder="문제를 입력하세요.&#10;&#10;예: 실수 x에 대하여 함수 f(x)=x^2+1의 값을 구하여라.&#10;&#10;\lim_{x\to0}\frac{\sin x}{x}의 값을 구하여라.">
-            </textarea>
-
-        </div>
-
-
-        <!-- 선택지 -->
-
-        <div
-            id="choiceArea"
-            class="field">
-
-            <label>
-                선택지
-            </label>
-
-
-            <div id="choices"></div>
-
-
-            <button
-                class="btn"
-                onclick="addChoice()">
-
-                ＋ 선택지
-
-            </button>
-
-        </div>
-
-
-        <!-- 주관식 정답 -->
-
-        <div
-            id="answerArea"
-            class="field hidden">
-
-            <label>
-                정답
-            </label>
-
-            <input
-                id="answer"
-                placeholder="정답">
-
-        </div>
-
-
-        <!-- 버튼 -->
-
-        <div
-            style="
-                display:flex;
-                gap:5px;
-                flex-wrap:wrap;
-            ">
-
-            <button
-                class="btn primary"
-                onclick="save(true)">
-
-                저장
-
-            </button>
-
-
-            <button
-                class="btn"
-                onclick="duplicate()">
-
-                복제
-
-            </button>
-
-
-            <button
-                class="btn"
-                onclick="removeProblem()">
-
-                삭제
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     PREVIEW
-===================================================== -->
-
-<section
-    class="panel preview-panel">
-
-    <div class="panel-header">
-
-        <div class="title">
-            미리보기
-        </div>
-
-
-        <div
-            style="
-                font-size:10px;
-                color:#16a34a;
-            ">
-
-            LIVE
-
-        </div>
-
-    </div>
-
-
-    <div class="preview">
-
-        <div
-            id="previewContent"
-            class="preview-content">
-
-        </div>
-
-    </div>
+  <div id="preview" class="preview"></div>
 
 </section>
 
 </div>
 
-
-<div
-    id="toast"
-    class="toast">
-
-</div>
-
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* =====================================================
-   DATA
-===================================================== */
-
-let problems = [];
-
-let currentId = null;
-
-let currentType = "multiple";
-
-let saveTimer = null;
-
-let renderTimer = null;
-
-let rendering = false;
+let problems=[];
+let currentId=null;
+let currentType="multiple";
+let saveTimer=null;
+let renderTimer=null;
 
 
-/* =====================================================
+/* =========================
    INIT
-===================================================== */
+========================= */
 
-function init() {
+function init(){
 
-    const saved =
-        localStorage.getItem(
-            "mathforge-problems"
-        );
+  try{
+    const saved=localStorage.getItem("mathforge-problems");
+
+    if(saved){
+      problems=JSON.parse(saved);
+    }
+  }catch(e){
+    problems=[];
+  }
+
+  if(!Array.isArray(problems) || problems.length===0){
+
+    problems=[{
+      id:Date.now(),
+      number:1,
+      score:5,
+      type:"multiple",
+
+      question:
+`실수 x에 대하여
+f(x)=\\frac{2x-1}{x+2} f(x)의 값을 구하여라.`,
+
+      choices:["0","1","2","3","4"],
+      answer:1,
+      shortAnswer:""
+    }];
+  }
+
+  currentId=problems[0].id;
+
+  loadProblem(currentId);
+  renderList();
+
+  if(localStorage.getItem("mathforge-dark")==="true"){
+    document.body.classList.add("dark");
+  }
+
+  waitMathJax().then(renderPreview);
+}
 
 
-    if (saved) {
+/* =========================
+   MATHJAX
+========================= */
 
-        try {
+function waitMathJax(){
 
-            problems =
-                JSON.parse(saved);
+  return new Promise(resolve=>{
 
-        }
-        catch {
+    function check(){
 
-            problems = [];
-
-        }
+      if(
+        window.MathJax &&
+        MathJax.startup &&
+        MathJax.startup.promise
+      ){
+        MathJax.startup.promise
+          .then(resolve)
+          .catch(resolve);
+      }else{
+        setTimeout(check,50);
+      }
 
     }
 
+    check();
 
-    if (
-        !Array.isArray(problems) ||
-        problems.length === 0
-    ) {
-
-        problems = [
-
-            {
-                id:
-                    Date.now(),
-
-                number:
-                    1,
-
-                score:
-                    5,
-
-                type:
-                    "multiple",
-
-                question:
-`실수 x에 대하여 함수 f(x)=x^2+1의 값을 구하여라.
-
-\\lim_{x\\to0}\\frac{\\sin x}{x}의 값을 구하여라.`,
-
-                choices: [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4"
-                ],
-
-                answer:
-                    1,
-
-                shortAnswer:
-                    ""
-            }
-
-        ];
-
-        persist();
-
-    }
+  });
+}
 
 
-    currentId =
-        problems[0].id;
+/* =========================
+   CURRENT
+========================= */
 
+function current(){
 
-    loadProblem(
-        currentId
-    );
-
-
-    renderList();
+  return problems.find(
+    p=>p.id===currentId
+  );
 
 }
 
 
-/* =====================================================
-   STORAGE
-===================================================== */
-
-function persist() {
-
-    localStorage.setItem(
-        "mathforge-problems",
-        JSON.stringify(
-            problems
-        )
-    );
-
-}
-
-
-/* =====================================================
-   CURRENT PROBLEM
-===================================================== */
-
-function getCurrent() {
-
-    return problems.find(
-        p =>
-            p.id === currentId
-    );
-
-}
-
-
-/* =====================================================
+/* =========================
    LOAD
-===================================================== */
+========================= */
 
-function loadProblem(id) {
+function loadProblem(id){
 
-    const problem =
-        problems.find(
-            p =>
-                p.id === id
-        );
+  const p=problems.find(
+    x=>x.id===id
+  );
 
+  if(!p)return;
 
-    if (!problem) {
-        return;
-    }
+  currentId=id;
+  currentType=p.type||"multiple";
 
+  number.value=p.number||1;
+  score.value=p.score||0;
+  question.value=p.question||"";
+  answer.value=p.shortAnswer||"";
 
-    currentId =
-        id;
-
-
-    currentType =
-        problem.type ||
-        "multiple";
-
-
-    document
-        .getElementById("number")
-        .value =
-        problem.number ??
-        1;
+  renderChoices(p.choices||[]);
+  updateTypeButtons();
+  renderList();
+  renderPreview();
+}
 
 
-    document
-        .getElementById("score")
-        .value =
-        problem.score ??
-        5;
+/* =========================
+   FORM
+========================= */
 
+function readForm(){
 
-    document
-        .getElementById("question")
-        .value =
-        problem.question ||
-        "";
-
-
-    document
-        .getElementById("answer")
-        .value =
-        problem.shortAnswer ||
-        "";
-
-
-    renderChoices(
-        problem.choices ||
-        []
-    );
-
-
-    updateTypeButtons();
-
-    renderList();
-
-    renderPreview();
+  return{
+    number:Number(number.value)||1,
+    score:Number(score.value)||0,
+    type:currentType,
+    question:question.value,
+    choices:[...document.querySelectorAll(".choice-input")]
+      .map(x=>x.value),
+    shortAnswer:answer.value
+  };
 
 }
 
 
-/* =====================================================
-   READ FORM
-===================================================== */
-
-function readForm() {
-
-    return {
-
-        number:
-            Number(
-                document
-                    .getElementById(
-                        "number"
-                    )
-                    .value
-            ) || 1,
-
-
-        score:
-            Number(
-                document
-                    .getElementById(
-                        "score"
-                    )
-                    .value
-            ) || 0,
-
-
-        type:
-            currentType,
-
-
-        question:
-            document
-                .getElementById(
-                    "question"
-                )
-                .value,
-
-
-        choices:
-            [
-                ...
-                document.querySelectorAll(
-                    "#choices .choice-input"
-                )
-            ].map(
-                input =>
-                    input.value
-            ),
-
-
-        shortAnswer:
-            document
-                .getElementById(
-                    "answer"
-                )
-                .value
-
-    };
-
-}
-
-
-/* =====================================================
+/* =========================
    SAVE
-===================================================== */
+========================= */
 
-function save(showToast = false) {
+function save(show=false){
 
-    const problem =
-        getCurrent();
+  const p=current();
 
+  if(!p)return;
 
-    if (!problem) {
-        return;
-    }
+  Object.assign(p,readForm());
 
+  localStorage.setItem(
+    "mathforge-problems",
+    JSON.stringify(problems)
+  );
 
-    Object.assign(
-        problem,
-        readForm()
-    );
+  savedStatus();
+  renderList();
 
-
-    persist();
-
-    setSaved();
-
-    renderList();
+  if(show)toast("저장되었습니다.");
+}
 
 
-    if (showToast) {
+function autoSave(){
 
-        toast(
-            "저장되었습니다."
-        );
+  dirtyStatus();
 
-    }
+  clearTimeout(saveTimer);
+
+  saveTimer=setTimeout(
+    ()=>save(false),
+    400
+  );
 
 }
 
 
-/* =====================================================
-   AUTO SAVE
-===================================================== */
+function dirtyStatus(){
 
-function autoSave() {
-
-    setDirty();
-
-
-    clearTimeout(
-        saveTimer
-    );
-
-
-    saveTimer =
-        setTimeout(
-            () => {
-
-                save(false);
-
-            },
-            400
-        );
+  status.innerHTML=
+  `<span class="dot dirty"></span><span>저장 중...</span>`;
 
 }
 
 
-/* =====================================================
-   STATUS
-===================================================== */
+function savedStatus(){
 
-function setDirty() {
-
-    document
-        .getElementById(
-            "status"
-        )
-        .innerHTML = `
-
-            <span
-                class="dot dirty">
-            </span>
-
-            <span>
-                저장 중...
-            </span>
-
-        `;
+  status.innerHTML=
+  `<span class="dot"></span><span>저장됨</span>`;
 
 }
 
 
-function setSaved() {
-
-    document
-        .getElementById(
-            "status"
-        )
-        .innerHTML = `
-
-            <span
-                class="dot">
-            </span>
-
-            <span>
-                저장됨
-            </span>
-
-        `;
-
-}
-
-
-/* =====================================================
+/* =========================
    TYPE
-===================================================== */
+========================= */
 
-function setType(type) {
+function setType(type){
 
-    currentType =
-        type;
+  currentType=type;
 
+  updateTypeButtons();
 
-    updateTypeButtons();
+  renderPreview();
 
-    renderPreview();
-
-    autoSave();
+  autoSave();
 
 }
 
 
-function updateTypeButtons() {
+function updateTypeButtons(){
 
-    document
-        .getElementById(
-            "multiple"
-        )
-        .classList.toggle(
-            "active",
-            currentType ===
-                "multiple"
-        );
+  multiple.classList.toggle(
+    "active",
+    currentType==="multiple"
+  );
 
+  short.classList.toggle(
+    "active",
+    currentType==="short"
+  );
 
-    document
-        .getElementById(
-            "short"
-        )
-        .classList.toggle(
-            "active",
-            currentType ===
-                "short"
-        );
+  choiceArea.classList.toggle(
+    "hidden",
+    currentType!=="multiple"
+  );
 
-
-    document
-        .getElementById(
-            "choiceArea"
-        )
-        .classList.toggle(
-            "hidden",
-            currentType !==
-                "multiple"
-        );
-
-
-    document
-        .getElementById(
-            "answerArea"
-        )
-        .classList.toggle(
-            "hidden",
-            currentType !==
-                "short"
-        );
+  answerArea.classList.toggle(
+    "hidden",
+    currentType!=="short"
+  );
 
 }
 
 
-/* =====================================================
+/* =========================
    CHOICES
-===================================================== */
+========================= */
 
-function renderChoices(values) {
+function renderChoices(values){
 
-    const container =
-        document
-            .getElementById(
-                "choices"
-            );
+  choices.innerHTML="";
 
+  values.forEach((value,index)=>{
 
-    container.innerHTML =
-        "";
+    const row=document.createElement("div");
+    row.className="choice-row";
 
+    const radio=document.createElement("input");
+    radio.type="radio";
+    radio.name="correct";
 
-    values.forEach(
-        (value, index) => {
+    const p=current();
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+    radio.checked=
+      p &&
+      p.answer===index;
 
-            row.className =
-                "choice-row";
+    radio.onchange=()=>{
 
+      if(p)p.answer=index;
 
-            const radio =
-                document.createElement(
-                    "input"
-                );
-
-            radio.type =
-                "radio";
-
-            radio.name =
-                "correct";
-
-
-            const problem =
-                getCurrent();
-
-
-            radio.checked =
-                problem &&
-                problem.answer ===
-                    index;
-
-
-            radio.onchange =
-                () => {
-
-                    if (problem) {
-
-                        problem.answer =
-                            index;
-
-                    }
-
-                    autoSave();
-
-                };
-
-
-            const input =
-                document.createElement(
-                    "input"
-                );
-
-            input.type =
-                "text";
-
-            input.className =
-                "choice-input";
-
-            input.value =
-                value;
-
-
-            input.oninput =
-                () => {
-
-                    schedulePreview();
-
-                    autoSave();
-
-                };
-
-
-            const remove =
-                document.createElement(
-                    "button"
-                );
-
-            remove.className =
-                "remove";
-
-            remove.textContent =
-                "×";
-
-
-            remove.onclick =
-                () => {
-
-                    const values =
-                        getChoices();
-
-
-                    values.splice(
-                        index,
-                        1
-                    );
-
-
-                    if (
-                        values.length === 0
-                    ) {
-
-                        values.push("");
-
-                    }
-
-
-                    renderChoices(
-                        values
-                    );
-
-                    renderPreview();
-
-                    autoSave();
-
-                };
-
-
-            row.append(
-                radio,
-                input,
-                remove
-            );
-
-
-            container.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   GET CHOICES
-===================================================== */
-
-function getChoices() {
-
-    return [
-        ...
-        document.querySelectorAll(
-            "#choices .choice-input"
-        )
-    ].map(
-        input =>
-            input.value
-    );
-
-}
-
-
-/* =====================================================
-   ADD CHOICE
-===================================================== */
-
-function addChoice() {
-
-    const values =
-        getChoices();
-
-
-    values.push("");
-
-
-    renderChoices(
-        values
-    );
-
-
-    autoSave();
-
-}
-
-
-/* =====================================================
-   NEW PROBLEM
-===================================================== */
-
-function newProblem() {
-
-    const problem = {
-
-        id:
-            Date.now() +
-            Math.random(),
-
-        number:
-            problems.length +
-            1,
-
-        score:
-            5,
-
-        type:
-            "multiple",
-
-        question:
-            "",
-
-        choices: [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-
-        answer:
-            0,
-
-        shortAnswer:
-            ""
+      autoSave();
+      renderPreview();
 
     };
 
 
-    problems.unshift(
-        problem
+    const input=document.createElement("input");
+
+    input.type="text";
+    input.className="choice-input";
+    input.value=value;
+
+    input.oninput=()=>{
+      renderPreview();
+      autoSave();
+    };
+
+
+    const remove=document.createElement("button");
+
+    remove.className="remove";
+    remove.textContent="×";
+
+    remove.onclick=()=>{
+
+      const arr=getChoices();
+
+      arr.splice(index,1);
+
+      if(arr.length===0)arr.push("");
+
+      renderChoices(arr);
+      renderPreview();
+      autoSave();
+
+    };
+
+
+    row.append(
+      radio,
+      input,
+      remove
     );
 
+    choices.appendChild(row);
 
-    currentId =
-        problem.id;
-
-
-    loadProblem(
-        problem.id
-    );
-
-
-    persist();
-
-
-    toast(
-        "새 문제가 생성되었습니다."
-    );
+  });
 
 }
 
 
-/* =====================================================
+function getChoices(){
+
+  return [...document.querySelectorAll(".choice-input")]
+    .map(x=>x.value);
+
+}
+
+
+function addChoice(){
+
+  const arr=getChoices();
+
+  arr.push("");
+
+  renderChoices(arr);
+  autoSave();
+
+}
+
+
+/* =========================
+   NEW
+========================= */
+
+function newProblem(){
+
+  const p={
+    id:Date.now()+Math.random(),
+    number:problems.length+1,
+    score:5,
+    type:"multiple",
+    question:"",
+    choices:["","","","",""],
+    answer:0,
+    shortAnswer:""
+  };
+
+  problems.unshift(p);
+
+  currentId=p.id;
+
+  loadProblem(p.id);
+  save(false);
+
+  toast("새 문제가 생성되었습니다.");
+
+}
+
+
+/* =========================
    DUPLICATE
-===================================================== */
+========================= */
 
-function duplicate() {
+function duplicate(){
 
-    const problem =
-        getCurrent();
+  const p=current();
 
+  if(!p)return;
 
-    if (!problem) {
-        return;
-    }
+  const copy=JSON.parse(JSON.stringify(p));
 
+  copy.id=Date.now()+Math.random();
+  copy.number=problems.length+1;
 
-    const copy =
-        JSON.parse(
-            JSON.stringify(
-                problem
-            )
-        );
+  problems.unshift(copy);
 
+  currentId=copy.id;
 
-    copy.id =
-        Date.now() +
-        Math.random();
+  loadProblem(copy.id);
+  save(false);
 
-
-    copy.number =
-        problems.length +
-        1;
-
-
-    problems.unshift(
-        copy
-    );
-
-
-    currentId =
-        copy.id;
-
-
-    loadProblem(
-        copy.id
-    );
-
-
-    persist();
-
-
-    toast(
-        "문제를 복제했습니다."
-    );
+  toast("문제를 복제했습니다.");
 
 }
 
 
-/* =====================================================
+/* =========================
    DELETE
-===================================================== */
+========================= */
 
-function removeProblem() {
+function removeProblem(){
 
-    if (
-        problems.length <= 1
-    ) {
+  if(problems.length<=1){
 
-        toast(
-            "최소 한 문제는 있어야 합니다."
-        );
+    toast("최소 한 문제는 있어야 합니다.");
+    return;
 
-        return;
+  }
 
-    }
+  if(!confirm("현재 문제를 삭제할까요?"))return;
 
+  const index=problems.findIndex(
+    p=>p.id===currentId
+  );
 
-    if (
-        !confirm(
-            "현재 문제를 삭제할까요?"
-        )
-    ) {
+  problems.splice(index,1);
 
-        return;
+  const next=
+    problems[Math.max(0,index-1)];
 
-    }
+  currentId=next.id;
 
-
-    const index =
-        problems.findIndex(
-            p =>
-                p.id === currentId
-        );
-
-
-    problems.splice(
-        index,
-        1
-    );
-
-
-    const next =
-        problems[
-            Math.max(
-                0,
-                index - 1
-            )
-        ];
-
-
-    currentId =
-        next.id;
-
-
-    loadProblem(
-        currentId
-    );
-
-
-    persist();
+  loadProblem(currentId);
+  save(false);
 
 }
 
 
-/* =====================================================
+/* =========================
    LIST
-===================================================== */
+========================= */
 
-function renderList() {
+function renderList(){
 
-    const list =
-        document
-            .getElementById(
-                "problemList"
-            );
+  const q=search.value.toLowerCase();
 
+  problemList.innerHTML="";
 
-    const search =
-        document
-            .getElementById(
-                "search"
-            )
-            .value
-            .toLowerCase();
+  problems
+    .filter(p=>
+      String(p.number).includes(q) ||
+      String(p.question||"").toLowerCase().includes(q)
+    )
+    .forEach(p=>{
 
+      const item=document.createElement("div");
 
-    list.innerHTML =
-        "";
+      item.className="problem";
 
+      if(p.id===currentId)
+        item.classList.add("active");
 
-    problems
-        .filter(
-            problem => {
+      const title=(p.question||"새 문제")
+        .replace(/\n/g," ")
+        .slice(0,45);
 
-                const text =
-                    String(
-                        problem.question ||
-                        ""
-                    )
-                    .toLowerCase();
+      item.innerHTML=`
+        <div class="problem-title">
+          ${p.number}. ${escapeHTML(title)}
+        </div>
+        <div class="problem-meta">
+          ${p.score}점 · ${p.type==="short"?"주관식":"객관식"}
+        </div>
+      `;
 
+      item.onclick=()=>loadProblem(p.id);
 
-                return (
-                    text.includes(
-                        search
-                    )
-                    ||
-                    String(
-                        problem.number
-                    ).includes(
-                        search
-                    )
-                );
+      problemList.appendChild(item);
 
-            }
-        )
-        .forEach(
-            problem => {
-
-                const item =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                item.className =
-                    "problem";
-
-
-                if (
-                    problem.id ===
-                    currentId
-                ) {
-
-                    item.classList.add(
-                        "active"
-                    );
-
-                }
-
-
-                const title =
-                    (
-                        problem.question ||
-                        ""
-                    )
-                    .replace(
-                        /\n/g,
-                        " "
-                    )
-                    .slice(
-                        0,
-                        45
-                    );
-
-
-                item.innerHTML = `
-
-                    <div
-                        class="problem-title">
-
-                        ${escapeHTML(
-                            problem.number +
-                            ". " +
-                            (
-                                title ||
-                                "새 문제"
-                            )
-                        )}
-
-                    </div>
-
-
-                    <div
-                        class="problem-meta">
-
-                        ${problem.score}점
-                        ·
-                        ${
-                            problem.type ===
-                            "short"
-                            ? "주관식"
-                            : "객관식"
-                        }
-
-                    </div>
-
-                `;
-
-
-                item.onclick =
-                    () => {
-
-                        loadProblem(
-                            problem.id
-                        );
-
-                    };
-
-
-                list.appendChild(
-                    item
-                );
-
-            }
-        );
+    });
 
 }
 
 
 /* =====================================================
-   =====================================================
-   ★ MATH PARSER
-   =====================================================
+   핵심 렌더러
 ===================================================== */
 
-
 /*
-    여기서 중요한 원칙:
+   사용자가 $를 입력하지 않아도 된다.
 
-    1. 한글은 절대 제거하지 않는다.
-    2. 수학 부분만 \( ... \)으로 감싼다.
-    3. 실제 LaTeX는 수정하지 않는다.
-    4. 최종적인 수식 파싱은 MathJax가 한다.
+   핵심적으로 한 줄을 문자 단위로 검사하면서
+   LaTeX 명령이 시작되는 위치를 찾는다.
+
+   예:
+
+   실수 x에 대하여
+   f(x)=\frac{2x-1}{x+2} f(x)
+
+   ↓
+
+   실수 x에 대하여
+   [f(x)=\frac{2x-1}{x+2} f(x)]
+
+   처럼 수식 영역을 만들어 MathJax에 넘긴다.
 */
 
 
-const LATEX_COMMANDS =
-    /\\(?:frac|dfrac|tfrac|sqrt|lim|sup|inf|max|min|sum|prod|int|iint|iiint|oint|sin|cos|tan|cot|sec|csc|log|ln|exp|det|binom|left|right|begin|end|alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|mu|nu|xi|pi|rho|sigma|tau|upsilon|phi|chi|psi|omega|infty|to|cdot|times|pm|mp|le|ge|neq|approx|equiv|sim|partial|nabla|in|notin|subset|subseteq|supset|cup|cap|forall|exists)\b/;
+const latexCommands=
+/\\(?:frac|dfrac|tfrac|sqrt|lim|sum|prod|int|oint|sin|cos|tan|cot|sec|csc|log|ln|exp|det|binom|begin|end|left|right|mathbb|mathbf|mathrm|mathit|text|overline|underline|vec|hat|bar|alpha|beta|gamma|delta|epsilon|varepsilon|theta|lambda|mu|sigma|pi|rho|tau|phi|varphi|omega|infty|to|cdot|times|pm|mp|le|ge|neq|approx|equiv|partial|nabla)\b/;
 
 
 /*
-    문장에 명백한 LaTeX 명령이 있는지
+   수식에 포함될 가능성이 높은 문자열.
+*/
+function containsMath(line){
+
+  if(latexCommands.test(line))return true;
+
+  if(/[A-Za-z]\s*\([^()\n]*\)/.test(line))return true;
+
+  if(/[A-Za-z0-9πθ]\s*[\^_]/.test(line))return true;
+
+  if(/\d+\s*[A-Za-z]/.test(line))return true;
+
+  if(/[A-Za-z]\s*[=<>±+\-*/]\s*[A-Za-z0-9]/.test(line))
+    return true;
+
+  return false;
+}
+
+
+/*
+   한 줄 전체를 MathJax가 처리하도록 한다.
+
+   한글은 일반 텍스트로,
+   수학 부분은 MathJax가 인식할 수 있게
+   \(...\)로 감싼다.
+
+   기존 코드처럼 f(x)만 따로 잘라내지 않는다.
 */
 
-function hasLatex(text) {
+function convertLine(line){
 
-    return LATEX_COMMANDS.test(
-        text
+  if(!line)return "";
+
+  /*
+     사용자가 이미 \( \)를 넣은 경우
+     그대로 사용.
+  */
+
+  if(
+    line.includes("\\(") ||
+    line.includes("\\[")
+  ){
+    return line;
+  }
+
+
+  if(!containsMath(line))
+    return escapeHTML(line);
+
+
+  /*
+     LaTeX 명령이 들어간 경우
+     명령이 시작되는 위치를 기준으로
+     앞의 일반 문장과 뒤의 수식을 분리한다.
+  */
+
+  const commandMatch=line.match(latexCommands);
+
+  if(commandMatch){
+
+    const index=commandMatch.index;
+
+    /*
+       명령 앞쪽에 f(x)= 같은 수식이 있을 수 있다.
+       따라서 앞부분에서 마지막 공백을 기준으로
+       수식 시작점을 찾는다.
+    */
+
+    let start=index;
+
+    const before=line.slice(0,index);
+
+    const mathStart=before.search(
+      /(?:[A-Za-z]\s*\([^()\n]*\)|[A-Za-z0-9πθ])\s*(?:=|[+\-*/^_])/
     );
 
-}
-
-
-/*
-    문장 전체가 수식인지 확인
-*/
-
-function isWholeMath(text) {
-
-    const s =
-        text.trim();
-
-
-    if (!s) {
-        return false;
-    }
-
-
-    /*
-       LaTeX 명령
-    */
-
-    if (
-        hasLatex(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    /*
-       f(x)
-       f(1)
-       f(2)
-       g(t)
-    */
-
-    if (
-        /^[A-Za-z]\s*\([^)]*\)$/
-            .test(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    /*
-       f(x)=...
-    */
-
-    if (
-        /^[A-Za-z]\s*\([^)]*\)\s*=/
-            .test(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    /*
-       x^2
-       x_n
-       a_{n+1}
-    */
-
-    if (
-        /^[A-Za-z0-9πθ]\s*[_^]/
-            .test(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    /*
-       2x
-       3a
-    */
-
-    if (
-        /^\d+\s*[A-Za-z]/
-            .test(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    /*
-       2x+1
-       x+1
-       x-2
-       3x=5
-    */
-
-    if (
-        /^[A-Za-z0-9πθ][A-Za-z0-9πθ\s]*[+\-*/=<>][A-Za-z0-9πθ\s]+$/
-            .test(s)
-    ) {
-
-        return true;
-
-    }
-
-
-    return false;
-
-}
-
-
-/*
-    LaTeX가 들어있는 문장 전체를
-    안전하게 수식으로 감싸기
-
-    예:
-
-    \lim_{x\to0}\frac{\sin x}{x}의 값을
-
-    → 수식 부분과 한글 부분 분리
-*/
-
-
-function renderLine(text) {
-
-    if (!text) {
-
-        return "<br>";
-
-    }
-
-
-    /*
-       이미 사용자가 직접
-       \( ... \)을 입력한 경우
-
-       MathJax가 직접 처리하도록
-       그대로 반환한다.
-    */
-
-    if (
-        text.includes("\\(") ||
-        text.includes("\\[")
-    ) {
-
-        return escapeHTML(
-            text
-        );
-
-    }
-
-
-    /*
-       $도 지원은 하지만
-       입력할 필요는 없다.
-    */
-
-    if (
-        text.includes("$")
-    ) {
-
-        return escapeHTML(
-            text
-        );
-
-    }
-
-
-    /*
-       LaTeX 명령이 없는 경우
-       문장 내부의 수학식을 찾는다.
-    */
-
-    if (
-        !hasLatex(text)
-    ) {
-
-        return renderNaturalMath(
-            text
-        );
-
-    }
-
-
-    /*
-       LaTeX 명령이 있는 경우
-       수식 시작 위치를 찾는다.
-    */
-
-    const match =
-        text.match(
-            /\\(?:frac|dfrac|tfrac|sqrt|lim|sum|prod|int|iint|iiint|oint|sin|cos|tan|cot|log|ln|exp|binom|alpha|beta|gamma|delta|theta|pi|infty)\b/
-        );
-
-
-    if (!match) {
-
-        return renderNaturalMath(
-            text
-        );
-
-    }
-
-
-    const start =
-        match.index;
-
-
-    let before =
-        text.slice(
-            0,
-            start
-        );
-
-
-    let math =
-        text.slice(
-            start
-        );
-
-
-    /*
-       LaTeX 수식의 끝을 찾는다.
-
-       한글이 등장하면 기본적으로
-       수식을 종료한다.
-
-       단, LaTeX의 { } 안에 있는
-       한글은 예외.
-    */
-
-    let depth = 0;
-    let end = math.length;
-
-
-    for (
-        let i = 0;
-        i < math.length;
-        i++
-    ) {
-
-        const ch =
-            math[i];
-
-
-        if (
-            ch === "{"
-        ) {
-
-            depth++;
-
-        }
-        else if (
-            ch === "}"
-        ) {
-
-            depth--;
-
-        }
-
-
-        if (
-            depth === 0 &&
-            /[가-힣]/.test(ch)
-        ) {
-
-            end =
-                i;
-
-            break;
-
-        }
-
-    }
-
-
-    /*
-       수식 부분
-    */
-
-    const mathPart =
-        math.slice(
-            0,
-            end
-        );
-
-
-    const after =
-        math.slice(
-            end
-        );
-
+    if(mathStart>=0)
+      start=mathStart;
+
+    const textPart=line.slice(0,start);
+    const mathPart=line.slice(start);
 
     return (
-        escapeHTML(
-            before
-        )
-        +
-        "\\(\\displaystyle " +
-        mathPart +
-        "\\)"
-        +
-        renderNaturalMath(
-            after
-        )
+      escapeHTML(textPart)+
+      "\\("+mathPart+"\\)"
+    );
+  }
+
+
+  /*
+     LaTeX 명령이 없지만
+
+     f(x)
+     f(1)
+     f(2)
+     f(x)=...
+     2x
+     x^2
+
+     등이 있는 경우.
+
+     한글 문장 속에서도 정상 처리한다.
+  */
+
+  const functionMatch=line.match(
+    /[A-Za-z]\s*\([^()\n]*\)/
+  );
+
+  if(functionMatch){
+
+    const start=functionMatch.index;
+
+    /*
+       함수 앞에 한글이 있는 경우
+       함수부터 수식으로 시작.
+    */
+
+    let end=start+functionMatch[0].length;
+
+    /*
+       뒤에 = 수식이 이어지면 끝까지 수식.
+    */
+
+    const rest=line.slice(end);
+
+    const equationMatch=rest.match(
+      /^\s*(?:=|[+\-*/])\s*(?:\\[A-Za-z]+|[A-Za-z0-9πθ{}().+\-*/^_=]+)/
     );
 
+    if(equationMatch)
+      end+=equationMatch[0].length;
+
+
+    /*
+       뒤에 또 f(x), f(1) 등이 붙어 있으면
+       같은 수식 영역으로 처리.
+    */
+
+    const after=line.slice(end);
+
+    const nextFunction=after.match(
+      /^\s*[A-Za-z]\s*\([^()\n]*\)/
+    );
+
+    if(nextFunction)
+      end+=nextFunction[0].length;
+
+
+    return(
+      escapeHTML(line.slice(0,start))+
+      "\\("+line.slice(start,end)+"\\)"+
+      escapeHTML(line.slice(end))
+    );
+  }
+
+
+  /*
+     전체가 수학식인 경우
+  */
+
+  if(
+    /^[A-Za-z0-9πθ\s.+\-*/=<>^_()[\]{}]+$/.test(line)
+  ){
+    return "\\("+line+"\\)";
+  }
+
+
+  return escapeHTML(line);
 }
 
 
-/*
-    일반 문장 내부의
-    x / a / n / f(x) 등을 인식
-*/
-
-function renderNaturalMath(text) {
-
-    let result = "";
-
-    let i = 0;
-
-
-    while (
-        i < text.length
-    ) {
-
-        /*
-           한글
-        */
-
-        if (
-            /[가-힣]/.test(
-                text[i]
-            )
-        ) {
-
-            result +=
-                escapeHTML(
-                    text[i]
-                );
-
-            i++;
-
-            continue;
-
-        }
-
-
-        /*
-           영문자
-        */
-
-        if (
-            /[A-Za-z]/.test(
-                text[i]
-            )
-        ) {
-
-            /*
-               영어 단어
-
-               sin, cos, tan,
-               max, min 등
-            */
-
-            const wordMatch =
-                text
-                    .slice(i)
-                    .match(
-                        /^[A-Za-z]+/
-                    );
-
-
-            if (
-                wordMatch
-            ) {
-
-                const word =
-                    wordMatch[0];
-
-
-                /*
-                   함수 형태
-
-                   f(x)
-                   f(1)
-                   g(t)
-                */
-
-                const functionMatch =
-                    text
-                        .slice(i)
-                        .match(
-                            /^[A-Za-z]\s*\([^)]*\)/
-                        );
-
-
-                if (
-                    functionMatch
-                ) {
-
-                    const value =
-                        functionMatch[0];
-
-
-                    result +=
-                        "\\(\\displaystyle " +
-                        value +
-                        "\\)";
-
-
-                    i +=
-                        value.length;
-
-
-                    continue;
-
-                }
-
-
-                /*
-                   sin / cos / tan 등을
-                   일반 단어가 아니라
-                   수식으로 쓰는 경우
-                */
-
-                if (
-                    /^(sin|cos|tan|cot|sec|csc|log|ln|max|min|lim)$/
-                        .test(word)
-                ) {
-
-                    result +=
-                        "\\(\\displaystyle " +
-                        word +
-                        "\\)";
-
-                    i +=
-                        word.length;
-
-                    continue;
-
-                }
-
-
-                /*
-                   한 글자 변수
-
-                   x
-                   y
-                   a
-                   b
-                   n
-                   t
-                */
-
-                if (
-                    word.length === 1
-                ) {
-
-                    /*
-                       뒤에 위/아래 첨자가
-                       있는 경우
-
-                       x^2
-                       x_n
-                       a_{n+1}
-                    */
-
-                    const rest =
-                        text.slice(
-                            i
-                        );
-
-
-                    const subscript =
-                        rest.match(
-                            /^[A-Za-z]\s*([_^])\s*(\{[^}]*\}|[A-Za-z0-9]+)/
-                        );
-
-
-                    if (
-                        subscript
-                    ) {
-
-                        const value =
-                            subscript[0];
-
-
-                        result +=
-                            "\\(\\displaystyle " +
-                            value +
-                            "\\)";
-
-
-                        i +=
-                            value.length;
-
-
-                        continue;
-
-                    }
-
-
-                    /*
-                       숫자/문자와 결합된
-                       일반적인 수식
-
-                       2x
-                    */
-
-                    if (
-                        i > 0 &&
-                        /\d/.test(
-                            text[i - 1]
-                        )
-                    ) {
-
-                        result +=
-                            "\\(" +
-                            word +
-                            "\\)";
-
-                    }
-                    else {
-
-                        result +=
-                            "\\(" +
-                            word +
-                            "\\)";
-
-                    }
-
-
-                    i +=
-                        word.length;
-
-
-                    continue;
-
-                }
-
-
-                /*
-                   영어 단어
-
-                   "function"
-                   "value"
-
-                   등은 일반 글자로
-                   유지한다.
-                */
-
-                result +=
-                    escapeHTML(
-                        word
-                    );
-
-                i +=
-                    word.length;
-
-
-                continue;
-
-            }
-
-        }
-
-
-        /*
-           일반 숫자
-        */
-
-        if (
-            /\d/.test(
-                text[i]
-            )
-        ) {
-
-            /*
-               숫자 + 변수
-
-               2x
-               3a
-               10n
-            */
-
-            const numberVariable =
-                text
-                    .slice(i)
-                    .match(
-                        /^\d+(?:\.\d+)?[A-Za-z]/
-                    );
-
-
-            if (
-                numberVariable
-            ) {
-
-                const value =
-                    numberVariable[0];
-
-
-                result +=
-                    "\\(\\displaystyle " +
-                    value +
-                    "\\)";
-
-
-                i +=
-                    value.length;
-
-
-                continue;
-
-            }
-
-
-            /*
-               숫자 자체는
-               일반 글자로 둔다.
-
-               단독 "1"을 전부 수식으로
-               바꾸면 일반 문장까지
-               이상해질 수 있기 때문.
-            */
-
-            result +=
-                escapeHTML(
-                    text[i]
-                );
-
-            i++;
-
-            continue;
-
-        }
-
-
-        /*
-           수학 기호
-
-           π
-           θ
-           ∞
-        */
-
-        if (
-            /[πθ∞]/.test(
-                text[i]
-            )
-        ) {
-
-            result +=
-                "\\(\\displaystyle " +
-                text[i] +
-                "\\)";
-
-            i++;
-
-            continue;
-
-        }
-
-
-        /*
-           일반 문자
-        */
-
-        result +=
-            escapeHTML(
-                text[i]
-            );
-
-        i++;
-
-    }
-
-
-    return result;
-
-}
-
-
-/* =====================================================
-   ESCAPE
-===================================================== */
-
-function escapeHTML(text) {
-
-    return String(text)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =====================================================
+/* =========================
    PREVIEW
-===================================================== */
+========================= */
 
-async function renderPreview() {
+async function renderPreview(){
 
-    if (rendering) {
-        return;
-    }
+  const data=readForm();
 
-
-    rendering = true;
+  preview.innerHTML="";
 
 
-    const preview =
-        document
-            .getElementById(
-                "previewContent"
-            );
+  const info=document.createElement("div");
+
+  info.style.fontSize="13px";
+  info.style.color="var(--muted)";
+  info.style.marginBottom="15px";
+
+  info.textContent=
+    `${data.number}번 · ${data.score}점`;
+
+  preview.appendChild(info);
 
 
-    const data =
-        readForm();
+  const questionBox=document.createElement("div");
 
+  const lines=data.question.split("\n");
 
-    /*
-       MathJax가 이전에 만든
-       SVG 등을 완전히 제거
-    */
+  lines.forEach(line=>{
 
-    preview.innerHTML =
-        "";
+    const div=document.createElement("div");
 
-
-    /*
-       문제 정보
-    */
-
-    const info =
-        document.createElement(
-            "div"
-        );
-
-
-    info.style.fontSize =
-        "12px";
-
-    info.style.color =
-        "var(--muted)";
-
-    info.style.marginBottom =
-        "14px";
-
-
-    info.textContent =
-        `${data.number}번 · ${data.score}점`;
-
-
-    preview.appendChild(
-        info
-    );
-
+    div.className="preview-line";
 
     /*
-       문제 본문
+       innerHTML은 사용자 입력 전체에 직접 사용하지 않는다.
+       convertLine에서 텍스트 부분은 escapeHTML 처리한다.
     */
 
-    const question =
-        document.createElement(
-            "div"
-        );
+    div.innerHTML=convertLine(line);
+
+    questionBox.appendChild(div);
+
+  });
+
+  preview.appendChild(questionBox);
 
 
-    const lines =
-        data.question.split(
-            "\n"
-        );
+  if(data.type==="multiple"){
+
+    const box=document.createElement("div");
+
+    box.className="choices-preview";
+
+    data.choices.forEach((choice,index)=>{
+
+      const row=document.createElement("div");
+
+      row.className="choice-preview";
+
+      const n=document.createElement("div");
+
+      n.className="choice-number";
+      n.textContent=index+1;
+
+      const content=document.createElement("div");
+
+      content.innerHTML=convertLine(choice);
+
+      row.append(n,content);
+
+      box.appendChild(row);
+
+    });
+
+    preview.appendChild(box);
+  }
 
 
-    lines.forEach(
-        line => {
+  if(data.type==="short"){
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+    const answerBox=document.createElement("div");
 
+    answerBox.style.marginTop="25px";
+    answerBox.textContent=
+      "답: __________________";
 
-            div.className =
-                "preview-line";
+    preview.appendChild(answerBox);
 
-
-            /*
-               innerHTML에는
-               우리가 escape 처리한
-               텍스트 + MathJax delimiter만
-               들어간다.
-            */
-
-            div.innerHTML =
-                renderLine(
-                    line
-                );
+  }
 
 
-            question.appendChild(
-                div
-            );
+  if(window.MathJax){
 
-        }
-    );
+    try{
 
+      await MathJax.typesetPromise([preview]);
 
-    preview.appendChild(
-        question
-    );
+    }catch(error){
 
-
-    /*
-       객관식
-    */
-
-    if (
-        data.type ===
-        "multiple"
-    ) {
-
-        const choices =
-            document.createElement(
-                "div"
-            );
-
-
-        choices.className =
-            "choices-preview";
-
-
-        data.choices.forEach(
-            (choice,index) => {
-
-                const row =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                row.className =
-                    "choice-preview";
-
-
-                const number =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                number.className =
-                    "choice-number";
-
-
-                number.textContent =
-                    index + 1;
-
-
-                const content =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                content.innerHTML =
-                    renderLine(
-                        choice
-                    );
-
-
-                row.append(
-                    number,
-                    content
-                );
-
-
-                choices.appendChild(
-                    row
-                );
-
-            }
-        );
-
-
-        preview.appendChild(
-            choices
-        );
+      console.error(error);
 
     }
 
-
-    /*
-       주관식
-    */
-
-    if (
-        data.type ===
-        "short"
-    ) {
-
-        const answer =
-            document.createElement(
-                "div"
-            );
-
-
-        answer.style.marginTop =
-            "25px";
-
-
-        answer.textContent =
-            "답: __________________";
-
-
-        preview.appendChild(
-            answer
-        );
-
-    }
-
-
-    /*
-       MathJax에게 실제 파싱을 맡김
-    */
-
-    if (
-        window.MathJax &&
-        MathJax.typesetPromise
-    ) {
-
-        try {
-
-            await MathJax.typesetPromise(
-                [preview]
-            );
-
-        }
-        catch (error) {
-
-            console.error(
-                "MathJax rendering error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    rendering = false;
+  }
 
 }
 
 
-/* =====================================================
-   SCHEDULE PREVIEW
-===================================================== */
+/* =========================
+   INSERT
+========================= */
 
-function schedulePreview() {
+function insertAtCursor(text){
 
-    clearTimeout(
-        renderTimer
-    );
+  const el=question;
 
+  const start=el.selectionStart;
+  const end=el.selectionEnd;
 
-    renderTimer =
-        setTimeout(
-            () => {
+  el.value=
+    el.value.slice(0,start)+
+    text+
+    el.value.slice(end);
 
-                renderPreview();
+  el.focus();
 
-            },
-            30
-        );
+  const pos=start+text.length;
+
+  el.selectionStart=pos;
+  el.selectionEnd=pos;
+
+  renderPreview();
+  autoSave();
 
 }
 
 
-/* =====================================================
-   INSERT TOOL
-===================================================== */
+/* =========================
+   ESCAPE
+========================= */
 
-function insertAtCursor(text) {
+function escapeHTML(text){
 
-    const textarea =
-        document.getElementById(
-            "question"
-        );
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
-
-    const start =
-        textarea.selectionStart;
-
-
-    const end =
-        textarea.selectionEnd;
+}
 
 
-    textarea.value =
-        textarea.value.slice(
-            0,
-            start
-        )
-        +
-        text
-        +
-        textarea.value.slice(
-            end
-        );
+/* =========================
+   DARK
+========================= */
+
+function toggleDark(){
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "mathforge-dark",
+    document.body.classList.contains("dark")
+  );
+
+}
 
 
-    textarea.focus();
+/* =========================
+   TOAST
+========================= */
+
+function toast(message){
+
+  const t=document.getElementById("toast");
+
+  t.textContent=message;
+
+  t.classList.add("show");
+
+  setTimeout(
+    ()=>t.classList.remove("show"),
+    1500
+  );
+
+}
 
 
-    textarea.selectionStart =
-        textarea.selectionEnd =
-            start +
-            text.length;
+/* =========================
+   EVENTS
+========================= */
 
+[
+  number,
+  score,
+  question,
+  answer
+].forEach(el=>{
 
-    schedulePreview();
+  el.addEventListener("input",()=>{
+
+    clearTimeout(renderTimer);
+
+    renderTimer=setTimeout(
+      ()=>renderPreview(),
+      20
+    );
 
     autoSave();
 
-}
+  });
+
+});
 
 
-/* =====================================================
-   DARK MODE
-===================================================== */
-
-function toggleDark() {
-
-    document.body.classList.toggle(
-        "dark"
-    );
-
-
-    localStorage.setItem(
-        "mathforge-dark",
-        document.body.classList.contains(
-            "dark"
-        )
-    );
-
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function toast(message) {
-
-    const element =
-        document.getElementById(
-            "toast"
-        );
-
-
-    element.textContent =
-        message;
-
-
-    element.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            element.classList.remove(
-                "show"
-            );
-
-        },
-        1500
-    );
-
-}
-
-
-/* =====================================================
-   INPUT EVENTS
-===================================================== */
-
-[
-    "number",
-    "score",
-    "question",
-    "answer"
-].forEach(
-    id => {
-
-        document
-            .getElementById(
-                id
-            )
-            .addEventListener(
-                "input",
-                () => {
-
-                    schedulePreview();
-
-                    autoSave();
-
-                }
-            );
-
-    }
+search.addEventListener(
+  "input",
+  renderList
 );
 
 
-/* =====================================================
-   SEARCH
-===================================================== */
-
-document
-    .getElementById(
-        "search"
-    )
-    .addEventListener(
-        "input",
-        renderList
-    );
-
-
-/* =====================================================
-   DARK INIT
-===================================================== */
-
-if (
-    localStorage.getItem(
-        "mathforge-dark"
-    ) === "true"
-) {
-
-    document.body.classList.add(
-        "dark"
-    );
-
-}
-
-
-/* =====================================================
+/* =========================
    START
-===================================================== */
+========================= */
 
 init();
 
