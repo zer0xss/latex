@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Math Problem Editor</title>
 
@@ -18,7 +18,16 @@ window.MathJax = {
         processEscapes: false,
         processEnvironments: true
     },
-
+    options: {
+        skipHtmlTags: [
+            'script',
+            'noscript',
+            'style',
+            'textarea',
+            'pre',
+            'code'
+        ]
+    },
     svg: {
         fontCache: 'global'
     }
@@ -26,39 +35,38 @@ window.MathJax = {
 </script>
 
 <script
-    src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"
-    async>
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+async>
 </script>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
 :root {
-    --bg:#f3f4f6;
-    --panel:#ffffff;
-    --text:#171717;
-    --muted:#737373;
-    --border:#dedede;
-    --blue:#4f46e5;
-    --red:#ef4444;
-    --green:#16a34a;
+    --bg: #f5f6f8;
+    --panel: #ffffff;
+    --text: #171717;
+    --muted: #737373;
+    --border: #dedede;
+    --accent: #4f46e5;
+    --danger: #ef4444;
+    --success: #16a34a;
 }
 
 body.dark {
-    --bg:#101114;
-    --panel:#191a1f;
-    --text:#f5f5f5;
-    --muted:#a1a1aa;
-    --border:#30323a;
+    --bg: #111216;
+    --panel: #191a1f;
+    --text: #f5f5f5;
+    --muted: #a1a1aa;
+    --border: #30323a;
 }
 
 body {
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -68,177 +76,173 @@ body {
 }
 
 header {
-    height:58px;
-    background:var(--panel);
-    border-bottom:1px solid var(--border);
+    height: 58px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    padding:0 14px;
+    padding: 0 14px;
 
-    position:sticky;
-    top:0;
-    z-index:10;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .logo {
-    font-size:19px;
-    font-weight:800;
+    font-size: 19px;
+    font-weight: 800;
 }
 
 .logo span {
-    color:var(--blue);
+    color: var(--accent);
 }
 
 .header-right {
-    display:flex;
-    align-items:center;
-    gap:7px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 
 button {
-    font:inherit;
+    font: inherit;
 }
 
 .btn {
-    border:1px solid var(--border);
-    background:var(--panel);
-    color:var(--text);
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
 
-    padding:8px 11px;
+    padding: 8px 11px;
 
-    border-radius:8px;
+    border-radius: 8px;
 
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .btn:hover {
-    border-color:var(--blue);
+    border-color: var(--accent);
 }
 
 .primary {
-    background:var(--blue);
-    color:white;
-    border-color:var(--blue);
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
 }
 
 .status {
-    display:flex;
-    align-items:center;
-    gap:5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 
-    font-size:11px;
-    color:var(--muted);
+    font-size: 11px;
+    color: var(--muted);
 }
 
 .dot {
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--green);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
 }
 
 .dot.dirty {
-    background:#f59e0b;
+    background: #f59e0b;
 }
 
 .layout {
-    max-width:1500px;
+    max-width: 1500px;
+    margin: auto;
 
-    margin:auto;
+    padding: 8px;
 
-    padding:8px;
-
-    display:grid;
+    display: grid;
 
     grid-template-columns:
         210px
-        minmax(0,1fr)
-        minmax(0,1fr);
+        minmax(0, 1fr)
+        minmax(0, 1fr);
 
-    gap:7px;
+    gap: 7px;
 }
 
 .panel {
-    background:var(--panel);
-    border:1px solid var(--border);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
 
-    border-radius:10px;
-
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .panel-header {
-    height:48px;
+    height: 48px;
 
-    padding:0 13px;
+    padding: 0 13px;
 
-    border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .title {
-    font-size:14px;
-    font-weight:750;
+    font-size: 14px;
+    font-weight: 750;
 }
 
 .panel-body {
-    padding:12px;
-}
-
-input,
-select,
-textarea {
-    width:100%;
-
-    background:var(--panel);
-    color:var(--text);
-
-    border:1px solid var(--border);
-
-    border-radius:8px;
-
-    padding:9px;
-
-    outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color:var(--blue);
-}
-
-label {
-    display:block;
-
-    color:var(--muted);
-
-    font-size:12px;
-    font-weight:700;
-
-    margin-bottom:6px;
+    padding: 12px;
 }
 
 .field {
-    margin-bottom:13px;
+    margin-bottom: 13px;
+}
+
+label {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+input,
+textarea {
+    width: 100%;
+
+    background: var(--panel);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    padding: 9px;
+
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
 }
 
 .row {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:7px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
 }
 
 #question {
-    min-height:520px;
+    min-height: 520px;
 
-    resize:vertical;
+    resize: vertical;
 
     font-family:
         ui-monospace,
@@ -247,252 +251,237 @@ label {
         Consolas,
         monospace;
 
-    line-height:1.8;
+    line-height: 1.8;
 
-    font-size:14px;
+    font-size: 14px;
 }
 
 .toolbar {
-    display:flex;
-    flex-wrap:wrap;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 
-    gap:5px;
-
-    margin-bottom:7px;
+    margin-bottom: 7px;
 }
 
 .tool {
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    background:var(--bg);
+    background: var(--bg);
+    color: var(--text);
 
-    color:var(--text);
+    border-radius: 6px;
 
-    border-radius:6px;
+    padding: 6px 9px;
 
-    padding:6px 9px;
+    cursor: pointer;
 
-    cursor:pointer;
-
-    font-size:12px;
+    font-size: 12px;
 }
 
 .tool:hover {
-    border-color:var(--blue);
-    color:var(--blue);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .preview {
-    min-height:700px;
+    min-height: 700px;
 
-    padding:30px;
+    padding: 25px;
 
-    overflow-x:auto;
+    overflow-x: auto;
 
-    font-size:17px;
+    font-size: 17px;
 
-    line-height:1.9;
-
-    white-space:pre-wrap;
+    line-height: 1.9;
 }
 
-/*
-    MathJax 오류 표시
-*/
-
-mjx-merror {
-    color:var(--red) !important;
+.preview-line {
+    min-height: 1.9em;
 }
 
 .problem-list {
-    max-height:calc(100vh - 110px);
-    overflow-y:auto;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
 }
 
 .search {
-    margin-bottom:8px;
+    margin-bottom: 8px;
 }
 
 .problem {
-    padding:10px 12px;
+    padding: 10px 12px;
 
-    border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .problem:hover {
-    background:var(--bg);
+    background: var(--bg);
 }
 
 .problem.active {
-    background:
-        rgba(79,70,229,.1);
+    background: rgba(79, 70, 229, .1);
 }
 
 .problem-title {
-    font-size:13px;
-    font-weight:700;
+    font-size: 13px;
+    font-weight: 700;
 
-    overflow:hidden;
-
-    white-space:nowrap;
-
-    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .problem-meta {
-    color:var(--muted);
-
-    font-size:11px;
-
-    margin-top:4px;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
 }
 
 .choice-row {
-    display:flex;
-
-    gap:6px;
-
-    margin-bottom:6px;
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
 }
 
 .choice-row input[type="text"] {
-    flex:1;
+    flex: 1;
 }
 
 .remove {
-    width:34px;
+    width: 34px;
 
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    background:transparent;
+    background: transparent;
 
-    color:var(--red);
+    color: var(--danger);
 
-    border-radius:7px;
+    border-radius: 7px;
 
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .types {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:5px;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 5px;
 }
 
 .type {
-    padding:8px;
+    padding: 8px;
 
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    border-radius:7px;
+    border-radius: 7px;
 
-    background:var(--panel);
+    background: var(--panel);
 
-    color:var(--text);
+    color: var(--text);
 
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .type.active {
-    background:var(--blue);
-    color:white;
-    border-color:var(--blue);
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
 }
 
 .choices-preview {
-    margin-top:25px;
+    margin-top: 25px;
 
-    display:flex;
+    display: flex;
+    flex-direction: column;
 
-    flex-direction:column;
-
-    gap:12px;
+    gap: 12px;
 }
 
 .choice-preview {
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
 }
 
 .choice-number {
-    width:25px;
-    height:25px;
+    width: 25px;
+    height: 25px;
 
-    min-width:25px;
+    min-width: 25px;
 
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    border-radius:50%;
+    border-radius: 50%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size:12px;
+    font-size: 12px;
 }
 
 .hidden {
-    display:none;
+    display: none;
 }
 
 .toast {
-    position:fixed;
+    position: fixed;
 
-    bottom:20px;
-    left:50%;
+    bottom: 20px;
+    left: 50%;
 
-    transform:
-        translate(-50%,20px);
+    transform: translate(-50%, 20px);
 
-    opacity:0;
+    opacity: 0;
 
-    background:#222;
-    color:white;
+    background: #222;
+    color: white;
 
-    padding:10px 15px;
+    padding: 10px 15px;
 
-    border-radius:8px;
+    border-radius: 8px;
 
-    transition:.2s;
+    transition: .2s;
 
-    pointer-events:none;
+    pointer-events: none;
 }
 
 .toast.show {
-    opacity:1;
+    opacity: 1;
 
-    transform:
-        translate(-50%,0);
+    transform: translate(-50%, 0);
+}
+
+mjx-merror {
+    color: var(--danger) !important;
 }
 
 @media(max-width:1100px) {
-
     .layout {
         grid-template-columns:
             200px
-            minmax(0,1fr);
+            minmax(0, 1fr);
     }
 
     .preview-panel {
-        grid-column:1/-1;
+        grid-column: 1 / -1;
     }
 }
 
 @media(max-width:700px) {
-
     .layout {
-        display:flex;
-        flex-direction:column;
+        display: flex;
+        flex-direction: column;
     }
 
     .preview-panel {
-        order:3;
+        order: 3;
     }
 }
-
 </style>
 </head>
 
@@ -511,21 +500,11 @@ mjx-merror {
             <span>저장됨</span>
         </div>
 
-        <button
-            class="btn"
-            onclick="newProblem()">
+        <button class="btn" onclick="newProblem()">
             ＋ 새 문제
         </button>
 
-        <button
-            class="btn"
-            onclick="exportData()">
-            저장
-        </button>
-
-        <button
-            class="btn"
-            onclick="toggleDark()">
+        <button class="btn" onclick="toggleDark()">
             ◐
         </button>
 
@@ -547,9 +526,7 @@ mjx-merror {
             문제
         </div>
 
-        <button
-            class="btn"
-            onclick="newProblem()">
+        <button class="btn" onclick="newProblem()">
             ＋
         </button>
 
@@ -560,7 +537,8 @@ mjx-merror {
         <input
             id="search"
             class="search"
-            placeholder="문제 검색">
+            placeholder="문제 검색"
+        >
 
     </div>
 
@@ -594,7 +572,8 @@ mjx-merror {
 
                 <input
                     id="number"
-                    type="number">
+                    type="number"
+                >
 
             </div>
 
@@ -604,7 +583,8 @@ mjx-merror {
 
                 <input
                     id="score"
-                    type="number">
+                    type="number"
+                >
 
             </div>
 
@@ -638,10 +618,7 @@ mjx-merror {
 
         <div class="field">
 
-            <label>
-                문제
-            </label>
-
+            <label>문제</label>
 
             <div class="toolbar">
 
@@ -677,14 +654,14 @@ mjx-merror {
 
                 <button
                     class="tool"
-                    onclick="insert('\\pi')">
-                    π
+                    onclick="insert('x^2')">
+                    x²
                 </button>
 
                 <button
                     class="tool"
-                    onclick="insert('x^2')">
-                    x²
+                    onclick="insert('\\pi')">
+                    π
                 </button>
 
             </div>
@@ -693,13 +670,8 @@ mjx-merror {
             <textarea
                 id="question"
                 spellcheck="false"
-                placeholder="문제를 입력하세요.
-
-예:
-
-함수 f(x)에 대하여
-\lim_{x\to0}\frac{\sin x}{x}
-의 값을 구하여라."></textarea>
+                placeholder="문제를 입력하세요."
+            ></textarea>
 
         </div>
 
@@ -708,9 +680,7 @@ mjx-merror {
             id="choiceArea"
             class="field">
 
-            <label>
-                선택지
-            </label>
+            <label>선택지</label>
 
             <div id="choices"></div>
 
@@ -727,26 +697,21 @@ mjx-merror {
             id="answerArea"
             class="field hidden">
 
-            <label>
-                정답
-            </label>
+            <label>정답</label>
 
             <input
                 id="answer"
-                placeholder="정답">
+                placeholder="정답"
+            >
 
         </div>
 
 
-        <div
-            style="
-                display:flex;
-                gap:6px;
-            ">
+        <div style="display:flex;gap:6px;">
 
             <button
                 class="btn primary"
-                onclick="save()">
+                onclick="save(true)">
                 저장
             </button>
 
@@ -779,11 +744,7 @@ mjx-merror {
             미리보기
         </div>
 
-        <div
-            style="
-                font-size:11px;
-                color:#16a34a;
-            ">
+        <div style="font-size:11px;color:#16a34a;">
             LIVE
         </div>
 
@@ -799,152 +760,153 @@ mjx-merror {
 </div>
 
 
-<div
-    id="toast"
-    class="toast">
-</div>
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* =================================================
+/* =====================================================
    DATA
-================================================= */
+===================================================== */
 
 let problems = [];
 
-let current = null;
+let currentId = null;
 
-let type = "multiple";
+let currentType = "multiple";
 
 let saveTimer = null;
 
-let mathJaxReady = false;
+let renderTimer = null;
 
 
-/* =================================================
-   INIT MATHJAX
-================================================= */
+/* =====================================================
+   INIT
+===================================================== */
 
-window.addEventListener(
-    "load",
-    async () => {
+async function init() {
 
-        try {
-
-            await MathJax.startup.promise;
-
-            mathJaxReady = true;
-
-            render();
-
-        }
-        catch(error) {
-
-            console.error(
-                "MathJax loading failed:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* =================================================
-   INIT APP
-================================================= */
-
-function init() {
-
-    const data =
+    const stored =
         localStorage.getItem(
             "mathforge-problems"
         );
 
-    if(data) {
+    if(stored) {
 
         try {
-
-            problems =
-                JSON.parse(data);
-
-        }
-        catch {
-
+            problems = JSON.parse(stored);
+        } catch {
             problems = [];
-
         }
 
     }
 
     if(
-        !Array.isArray(problems)
-        ||
+        !Array.isArray(problems) ||
         problems.length === 0
     ) {
 
-        problems = [
-            {
-                id:Date.now(),
+        problems = [{
+            id: Date.now(),
 
-                number:1,
+            number: 1,
 
-                score:5,
+            score: 5,
 
-                type:"multiple",
+            type: "multiple",
 
-                question:
+            question:
 `함수 f(x)에 대하여
+
 \\lim_{x\\to0}\\frac{\\sin x}{x}
+
 의 값을 구하여라.`,
 
-                choices:[
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4"
-                ],
+            choices: [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
 
-                answer:1,
+            answer: 1,
 
-                shortAnswer:""
-
-            }
-        ];
+            shortAnswer: ""
+        }];
 
     }
 
-    current =
+    currentId =
         problems[0].id;
 
-    load(current);
+    loadProblem(currentId);
 
-    list();
+    renderList();
+
+    await waitForMathJax();
+
+    renderPreview();
 
 }
 
 
-/* =================================================
-   GET CURRENT
-================================================= */
+/* =====================================================
+   MATHJAX READY
+===================================================== */
+
+function waitForMathJax() {
+
+    return new Promise(resolve => {
+
+        const check = () => {
+
+            if(
+                window.MathJax &&
+                MathJax.startup &&
+                MathJax.startup.promise
+            ) {
+
+                MathJax.startup.promise
+                    .then(resolve)
+                    .catch(resolve);
+
+            } else {
+
+                setTimeout(
+                    check,
+                    50
+                );
+
+            }
+
+        };
+
+        check();
+
+    });
+
+}
+
+
+/* =====================================================
+   CURRENT
+===================================================== */
 
 function getCurrent() {
 
     return problems.find(
-        p => p.id === current
+        p => p.id === currentId
     );
 
 }
 
 
-/* =================================================
+/* =====================================================
    LOAD
-================================================= */
+===================================================== */
 
-function load(id) {
+function loadProblem(id) {
 
     const p =
         problems.find(
@@ -953,110 +915,92 @@ function load(id) {
 
     if(!p) return;
 
-    current = id;
+    currentId = id;
 
-    document
-        .getElementById("number")
-        .value =
-        p.number;
+    currentType =
+        p.type || "multiple";
 
-    document
-        .getElementById("score")
-        .value =
-        p.score;
+    document.getElementById("number").value =
+        p.number || 1;
 
-    document
-        .getElementById("question")
-        .value =
+    document.getElementById("score").value =
+        p.score || 0;
+
+    document.getElementById("question").value =
         p.question || "";
 
-    document
-        .getElementById("answer")
-        .value =
+    document.getElementById("answer").value =
         p.shortAnswer || "";
-
-    type =
-        p.type || "multiple";
 
     renderChoices(
         p.choices || []
     );
 
-    updateType();
+    updateTypeButtons();
 
-    list();
+    renderList();
 
-    render();
+    renderPreview();
 
 }
 
 
-/* =================================================
-   READ
-================================================= */
+/* =====================================================
+   READ FORM
+===================================================== */
 
-function read() {
-
-    const p =
-        getCurrent();
+function readForm() {
 
     return {
 
         number:
             Number(
-                document
-                    .getElementById(
-                        "number"
-                    ).value
+                document.getElementById("number").value
             ) || 1,
 
         score:
             Number(
-                document
-                    .getElementById(
-                        "score"
-                    ).value
+                document.getElementById("score").value
             ) || 0,
 
-        type:type,
+        type:
+            currentType,
 
         question:
-            document
-                .getElementById(
-                    "question"
-                ).value,
+            document.getElementById("question").value,
 
         choices:
-            getChoices(),
-
-        answer:
-            p?.answer || 0,
+            [
+                ...document.querySelectorAll(
+                    "#choices input.choice-input"
+                )
+            ].map(
+                input => input.value
+            ),
 
         shortAnswer:
-            document
-                .getElementById(
-                    "answer"
-                ).value
+            document.getElementById("answer").value
 
     };
 
 }
 
 
-/* =================================================
+/* =====================================================
    SAVE
-================================================= */
+===================================================== */
 
-function save(show=true) {
+function save(showToast = false) {
 
-    const p =
-        getCurrent();
+    const p = getCurrent();
 
     if(!p) return;
 
+    const data = readForm();
+
     Object.assign(
         p,
-        read()
+        data
     );
 
     localStorage.setItem(
@@ -1066,36 +1010,40 @@ function save(show=true) {
 
     setSaved();
 
-    list();
+    renderList();
 
-    if(show)
+    if(showToast)
         toast("저장되었습니다.");
 
 }
 
 
+/* =====================================================
+   AUTO SAVE
+===================================================== */
+
 function autoSave() {
 
     setDirty();
 
-    clearTimeout(
-        saveTimer
-    );
+    clearTimeout(saveTimer);
 
     saveTimer =
         setTimeout(
             () => save(false),
-            400
+            500
         );
 
 }
 
 
+/* =====================================================
+   STATUS
+===================================================== */
+
 function setDirty() {
 
-    document
-        .getElementById("status")
-        .innerHTML =
+    document.getElementById("status").innerHTML =
         `
         <span class="dot dirty"></span>
         <span>저장 중...</span>
@@ -1106,196 +1054,157 @@ function setDirty() {
 
 function setSaved() {
 
-    const time =
-        new Date()
-            .toLocaleTimeString(
-                "ko-KR",
-                {
-                    hour:"2-digit",
-                    minute:"2-digit",
-                    second:"2-digit"
-                }
-            );
-
-    document
-        .getElementById("status")
-        .innerHTML =
+    document.getElementById("status").innerHTML =
         `
         <span class="dot"></span>
-        <span>저장됨 · ${time}</span>
+        <span>저장됨</span>
         `;
 
 }
 
 
-/* =================================================
+/* =====================================================
    TYPE
-================================================= */
+===================================================== */
 
-function setType(newType) {
+function setType(type) {
 
-    type = newType;
+    currentType = type;
 
-    updateType();
+    updateTypeButtons();
 
-    render();
+    renderPreview();
 
     autoSave();
 
 }
 
 
-function updateType() {
+function updateTypeButtons() {
 
     document
         .getElementById("multiple")
         .classList.toggle(
             "active",
-            type === "multiple"
+            currentType === "multiple"
         );
 
     document
         .getElementById("short")
         .classList.toggle(
             "active",
-            type === "short"
+            currentType === "short"
         );
 
     document
         .getElementById("choiceArea")
         .classList.toggle(
             "hidden",
-            type !== "multiple"
+            currentType !== "multiple"
         );
 
     document
         .getElementById("answerArea")
         .classList.toggle(
             "hidden",
-            type !== "short"
+            currentType !== "short"
         );
 
 }
 
 
-/* =================================================
+/* =====================================================
    CHOICES
-================================================= */
-
-function getChoices() {
-
-    return [
-        ...document.querySelectorAll(
-            "#choices input[type=text]"
-        )
-    ].map(
-        x => x.value
-    );
-
-}
-
+===================================================== */
 
 function renderChoices(values) {
 
     const box =
-        document.getElementById(
-            "choices"
-        );
+        document.getElementById("choices");
 
     box.innerHTML = "";
 
     values.forEach(
-        (value,index) => {
+        (value, index) => {
 
             const row =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             row.className =
                 "choice-row";
 
             const radio =
-                document.createElement(
-                    "input"
-                );
+                document.createElement("input");
 
             radio.type = "radio";
-
             radio.name = "correct";
 
+            const p = getCurrent();
+
             radio.checked =
-                getCurrent()?.answer === index;
+                p &&
+                p.answer === index;
 
-            radio.onchange =
-                () => {
+            radio.onchange = () => {
 
-                    const p =
-                        getCurrent();
+                if(p)
+                    p.answer = index;
 
-                    if(p)
-                        p.answer = index;
+                autoSave();
 
-                    autoSave();
+                renderPreview();
 
-                    render();
-
-                };
+            };
 
 
             const input =
-                document.createElement(
-                    "input"
-                );
+                document.createElement("input");
 
             input.type = "text";
 
+            input.className =
+                "choice-input";
+
             input.value = value;
 
-            input.oninput =
-                () => {
+            input.oninput = () => {
 
-                    render();
+                renderPreview();
 
-                    autoSave();
+                autoSave();
 
-                };
+            };
 
 
             const remove =
-                document.createElement(
-                    "button"
-                );
+                document.createElement("button");
 
             remove.className =
                 "remove";
 
-            remove.textContent = "×";
+            remove.textContent =
+                "×";
 
-            remove.onclick =
-                () => {
+            remove.onclick = () => {
 
-                    const arr =
-                        getChoices();
+                const arr =
+                    getChoices();
 
-                    arr.splice(
-                        index,
-                        1
-                    );
+                arr.splice(
+                    index,
+                    1
+                );
 
-                    if(
-                        arr.length === 0
-                    )
-                        arr.push("");
+                if(arr.length === 0)
+                    arr.push("");
 
-                    renderChoices(arr);
+                renderChoices(arr);
 
-                    render();
+                renderPreview();
 
-                    autoSave();
+                autoSave();
 
-                };
-
+            };
 
             row.append(
                 radio,
@@ -1306,6 +1215,19 @@ function renderChoices(values) {
             box.appendChild(row);
 
         }
+    );
+
+}
+
+
+function getChoices() {
+
+    return [
+        ...document.querySelectorAll(
+            "#choices input.choice-input"
+        )
+    ].map(
+        input => input.value
     );
 
 }
@@ -1325,26 +1247,26 @@ function addChoice() {
 }
 
 
-/* =================================================
-   NEW
-================================================= */
+/* =====================================================
+   NEW PROBLEM
+===================================================== */
 
 function newProblem() {
 
     const p = {
 
-        id:Date.now(),
+        id: Date.now(),
 
         number:
             problems.length + 1,
 
-        score:5,
+        score: 5,
 
-        type:"multiple",
+        type: "multiple",
 
-        question:"",
+        question: "",
 
-        choices:[
+        choices: [
             "",
             "",
             "",
@@ -1352,22 +1274,19 @@ function newProblem() {
             ""
         ],
 
-        answer:0,
+        answer: 0,
 
-        shortAnswer:""
+        shortAnswer: ""
 
     };
 
     problems.unshift(p);
 
-    current = p.id;
+    currentId = p.id;
 
-    load(p.id);
+    loadProblem(p.id);
 
-    localStorage.setItem(
-        "mathforge-problems",
-        JSON.stringify(problems)
-    );
+    save(false);
 
     toast(
         "새 문제가 생성되었습니다."
@@ -1376,9 +1295,9 @@ function newProblem() {
 }
 
 
-/* =================================================
+/* =====================================================
    DUPLICATE
-================================================= */
+===================================================== */
 
 function duplicate() {
 
@@ -1400,10 +1319,10 @@ function duplicate() {
 
     problems.unshift(copy);
 
-    current =
+    currentId =
         copy.id;
 
-    load(copy.id);
+    loadProblem(copy.id);
 
     save(false);
 
@@ -1414,18 +1333,16 @@ function duplicate() {
 }
 
 
-/* =================================================
+/* =====================================================
    DELETE
-================================================= */
+===================================================== */
 
 function removeProblem() {
 
-    if(
-        problems.length <= 1
-    ) {
+    if(problems.length <= 1) {
 
         toast(
-            "최소 한 문제는 필요합니다."
+            "최소 한 문제는 있어야 합니다."
         );
 
         return;
@@ -1441,7 +1358,7 @@ function removeProblem() {
 
     const index =
         problems.findIndex(
-            p => p.id === current
+            p => p.id === currentId
         );
 
     problems.splice(
@@ -1449,28 +1366,33 @@ function removeProblem() {
         1
     );
 
-    current =
+    const next =
         problems[
             Math.max(
                 0,
                 index - 1
             )
-        ].id;
+        ];
 
-    load(current);
+    currentId =
+        next.id;
+
+    loadProblem(
+        currentId
+    );
 
     save(false);
 
 }
 
 
-/* =================================================
+/* =====================================================
    LIST
-================================================= */
+===================================================== */
 
-function list() {
+function renderList() {
 
-    const box =
+    const list =
         document.getElementById(
             "problemList"
         );
@@ -1482,172 +1404,388 @@ function list() {
         .value
         .toLowerCase();
 
-    box.innerHTML = "";
+    list.innerHTML = "";
 
     problems
-        .filter(
-            p =>
+        .filter(p => {
+
+            const q =
+                String(
+                    p.question || ""
+                )
+                .toLowerCase();
+
+            return (
+                q.includes(search) ||
                 String(p.number)
                     .includes(search)
-                ||
-                String(p.question)
-                    .toLowerCase()
-                    .includes(search)
-        )
-        .forEach(
-            p => {
+            );
 
-                const div =
-                    document.createElement(
-                        "div"
-                    );
+        })
+        .forEach(p => {
 
-                div.className =
-                    "problem";
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-                if(
-                    p.id === current
-                )
-                    div.classList.add(
-                        "active"
-                    );
+            item.className =
+                "problem";
 
-                const title =
-                    p.question
-                        .replace(
-                            /\n/g,
-                            " "
-                        )
-                        .slice(
-                            0,
-                            45
-                        );
+            if(
+                p.id === currentId
+            )
+                item.classList.add(
+                    "active"
+                );
 
-                div.innerHTML =
-                    `
-                    <div class="problem-title">
-                        ${p.number}.
-                        ${escapeHTML(
-                            title ||
-                            "새 문제"
-                        )}
-                    </div>
+            const title =
+                (p.question || "")
+                    .replace(/\n/g, " ")
+                    .slice(0, 45);
 
-                    <div class="problem-meta">
-                        ${p.score}점
-                        ·
-                        ${
-                            p.type === "multiple"
-                            ? "객관식"
-                            : "주관식"
-                        }
-                    </div>
-                    `;
+            item.innerHTML =
+                `
+                <div class="problem-title">
+                    ${p.number}.
+                    ${escapeHTML(
+                        title || "새 문제"
+                    )}
+                </div>
 
-                div.onclick =
-                    () => load(p.id);
+                <div class="problem-meta">
+                    ${p.score}점
+                    ·
+                    ${
+                        p.type === "short"
+                        ? "주관식"
+                        : "객관식"
+                    }
+                </div>
+                `;
 
-                box.appendChild(div);
+            item.onclick =
+                () => loadProblem(p.id);
 
-            }
-        );
+            list.appendChild(item);
+
+        });
 
 }
 
 
-/* =================================================
-   IMPORTANT:
-   LATEX RENDERER
-================================================= */
+/* =====================================================
+   LATEX DETECTION
+===================================================== */
 
 /*
-    여기서는 LaTeX 명령을 변형하지 않는다.
+    여기서 중요한 점:
 
-    입력:
+    LaTeX 문자열을 변형하지 않는다.
 
-        \lim_{n\to\infty}
-        \frac{1}{n}
-
-    를
-
-        \lim_{n\to\infty}
-        \frac{1}{n}
-
-    그대로 유지한다.
-
-    단지 MathJax가 인식할 수 있도록
-    \(...\) 로 감싸는 역할만 한다.
-
-    LaTeX 자체는 건드리지 않는다.
+    단지 어느 부분이 수식인지
+    찾아낼 뿐이다.
 */
 
 
-function convertForMathJax(text) {
+function looksLikeMath(text) {
+
+    if(!text)
+        return false;
+
+    const s =
+        text.trim();
 
     /*
-       이미 구분자가 있는 경우
-       그대로 유지한다.
+       명백한 LaTeX
     */
 
     if(
-        text.includes("\\(")
-        ||
-        text.includes("\\[")
+        /\\(frac|dfrac|tfrac|sqrt|lim|sum|prod|int|oint|sin|cos|tan|log|ln|exp|det|binom|begin|end|left|right|mathbb|mathbf|mathrm|overline|underline|vec|hat|bar|alpha|beta|gamma|delta|theta|pi|infty|to|cdot|times|pm|le|ge|neq|approx)\b/
+        .test(s)
+    )
+        return true;
+
+
+    /*
+       아래첨자 / 위첨자
+    */
+
+    if(
+        /[A-Za-z0-9)\]]\s*[_^]\s*\{?/.test(s)
+    )
+        return true;
+
+
+    /*
+       함수 형태:
+
+       f(x)
+       g(x)
+       h(t)
+       F(x)
+    */
+
+    if(
+        /^[A-Za-z]\s*\([^)]*\)$/.test(s)
+    )
+        return true;
+
+
+    /*
+       함수식
+
+       f(x)=...
+    */
+
+    if(
+        /^[A-Za-z]\s*\([^)]*\)\s*=/.test(s)
+    )
+        return true;
+
+
+    /*
+       일반적인 수학식
+
+       x+1
+       2x
+       x-y
+       x/2
+       3x+4
+    */
+
+    if(
+        /^[0-9A-Za-zπθ]\s*([+\-*/=<>]|\\times|\\cdot|\\pm)/
+        .test(s)
+    )
+        return true;
+
+
+    /*
+       숫자 + 문자
+
+       2x
+       3a
+    */
+
+    if(
+        /^[0-9]+\s*[A-Za-zπθ]/.test(s)
+    )
+        return true;
+
+
+    return false;
+
+}
+
+
+/* =====================================================
+   SPLIT LINE INTO TEXT + MATH
+===================================================== */
+
+/*
+    예:
+
+    함수 f(x)=x^2+1의 그래프
+
+    를
+
+    "함수 "
+
+    "f(x)=x^2+1"
+
+    "의 그래프"
+
+    로 나눈다.
+*/
+
+function renderSmartLine(
+    container,
+    line
+) {
+
+    /*
+       1.
+       이미 \( \)를 사용한 경우
+    */
+
+    if(
+        line.includes("\\(") ||
+        line.includes("\\[")
     ) {
 
-        return text;
+        const span =
+            document.createElement(
+                "span"
+            );
+
+        span.textContent =
+            line;
+
+        container.appendChild(
+            span
+        );
+
+        return;
 
     }
 
 
     /*
-       줄 단위로 처리한다.
+       명백한 LaTeX가 포함된 문장
 
-       LaTeX 명령이 들어간 줄은
-       수식 줄로 취급한다.
+       문장 속 \lim...\frac...
+       등을 찾아낸다.
     */
 
-    const lines =
-        text.split("\n");
+    const latexMatch =
+        line.match(
+            /\\(?:frac|dfrac|tfrac|sqrt|lim|sum|prod|int|oint|binom|begin|left|right)\b/
+        );
 
-    return lines.map(
-        line => {
 
-            const trimmed =
-                line.trim();
+    if(latexMatch) {
 
-            /*
-               LaTeX 명령이 시작되는
-               대표적인 경우.
-            */
+        const index =
+            latexMatch.index;
 
-            const isMath =
-                /^\\(frac|dfrac|tfrac|sqrt|lim|sum|prod|int|oint|sin|cos|tan|log|ln|max|min|exp|det|binom|begin|left|right|mathbf|mathrm|mathbb|overline|underline|vec|hat|bar|alpha|beta|gamma|theta|pi|infty|to|pm|times|cdot|le|ge|neq|approx)\b/
-                .test(trimmed)
-                ||
-                /[_^]/.test(trimmed)
-                ||
-                /\\(frac|sqrt|lim|sum|int|begin)\b/
-                    .test(trimmed);
+        if(index > 0) {
 
-            if(!isMath)
-                return line;
-
-            return "\\(" + line + "\\)";
+            container.appendChild(
+                document.createTextNode(
+                    line.slice(
+                        0,
+                        index
+                    )
+                )
+            );
 
         }
-    ).join("\n");
+
+        const math =
+            line.slice(index);
+
+        appendMath(
+            container,
+            math
+        );
+
+        return;
+
+    }
+
+
+    /*
+       문장 속 f(x)=...
+    */
+
+    const functionMatch =
+        line.match(
+            /[A-Za-z]\s*\([^)]*\)\s*=\s*[A-Za-z0-9πθ+\-*/^().]+/
+        );
+
+
+    if(functionMatch) {
+
+        const index =
+            functionMatch.index;
+
+        container.appendChild(
+            document.createTextNode(
+                line.slice(
+                    0,
+                    index
+                )
+            )
+        );
+
+        appendMath(
+            container,
+            functionMatch[0]
+        );
+
+        container.appendChild(
+            document.createTextNode(
+                line.slice(
+                    index +
+                    functionMatch[0].length
+                )
+            )
+        );
+
+        return;
+
+    }
+
+
+    /*
+       줄 전체가 f(x), g(x) 등
+    */
+
+    if(
+        looksLikeMath(line)
+    ) {
+
+        appendMath(
+            container,
+            line
+        );
+
+        return;
+
+    }
+
+
+    /*
+       그냥 일반 텍스트
+    */
+
+    container.appendChild(
+        document.createTextNode(
+            line
+        )
+    );
 
 }
 
 
-/* =================================================
-   RENDER
-================================================= */
+/* =====================================================
+   APPEND MATH
+===================================================== */
 
-let renderNumber = 0;
+function appendMath(
+    container,
+    latex
+) {
 
-async function render() {
+    const span =
+        document.createElement(
+            "span"
+        );
+
+    /*
+       MathJax가 직접 파싱한다.
+
+       LaTeX 자체는 변경하지 않는다.
+    */
+
+    span.textContent =
+        "\\(" +
+        latex +
+        "\\)";
+
+    container.appendChild(
+        span
+    );
+
+}
+
+
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+async function renderPreview() {
 
     const preview =
         document.getElementById(
@@ -1655,11 +1793,7 @@ async function render() {
         );
 
     const data =
-        read();
-
-    const token =
-        ++renderNumber;
-
+        readForm();
 
     preview.innerHTML = "";
 
@@ -1668,30 +1802,30 @@ async function render() {
        문제 번호
     */
 
-    const number =
+    const info =
         document.createElement(
             "div"
         );
 
-    number.style.fontSize =
+    info.style.fontSize =
         "13px";
 
-    number.style.color =
+    info.style.color =
         "var(--muted)";
 
-    number.style.marginBottom =
+    info.style.marginBottom =
         "18px";
 
-    number.textContent =
+    info.textContent =
         `${data.number}번 · ${data.score}점`;
 
     preview.appendChild(
-        number
+        info
     );
 
 
     /*
-       문제
+       문제 본문
     */
 
     const question =
@@ -1699,66 +1833,36 @@ async function render() {
             "div"
         );
 
-    question.className =
-        "preview-question";
 
-
-    /*
-       여기서만 수식 경계를 만든다.
-
-       LaTeX 명령 자체는 변경하지 않는다.
-    */
-
-    const converted =
-        convertForMathJax(
-            data.question
+    const lines =
+        data.question.split(
+            "\n"
         );
 
 
-    /*
-       innerHTML을 사용한다.
+    lines.forEach(
+        (line, index) => {
 
-       MathJax가
-       \( ... \)
-       를 읽어야 하기 때문이다.
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-       사용자가 입력한 HTML이
-       그대로 실행되지 않도록
-       먼저 HTML escape.
-    */
+            div.className =
+                "preview-line";
 
-    question.innerHTML =
-        escapeHTML(
-            converted
-        )
-        .replace(
-            /&amp;lt;/g,
-            "&lt;"
-        )
-        .replace(
-            /&amp;gt;/g,
-            "&gt;"
-        )
-        .replace(
-            /&amp;quot;/g,
-            "&quot;"
-        );
+            renderSmartLine(
+                div,
+                line
+            );
 
-    /*
-       위 방식은 MathJax 구분자까지
-       HTML escape하지 않도록
-       별도 처리가 필요하다.
+            question.appendChild(
+                div
+            );
 
-       그래서 아래에서 다시
-       안전하게 MathJax 영역을 만든다.
-    */
-
-    question.innerHTML = "";
-
-    appendLatexText(
-        question,
-        data.question
+        }
     );
+
 
     preview.appendChild(
         question
@@ -1782,7 +1886,7 @@ async function render() {
             "choices-preview";
 
         data.choices.forEach(
-            (text,index) => {
+            (choice, index) => {
 
                 const row =
                     document.createElement(
@@ -1793,15 +1897,15 @@ async function render() {
                     "choice-preview";
 
 
-                const n =
+                const number =
                     document.createElement(
                         "div"
                     );
 
-                n.className =
+                number.className =
                     "choice-number";
 
-                n.textContent =
+                number.textContent =
                     index + 1;
 
 
@@ -1810,14 +1914,14 @@ async function render() {
                         "div"
                     );
 
-                appendLatexText(
+                renderSmartLine(
                     content,
-                    text
+                    choice
                 );
 
 
                 row.append(
-                    n,
+                    number,
                     content
                 );
 
@@ -1834,6 +1938,10 @@ async function render() {
 
     }
 
+
+    /*
+       주관식
+    */
 
     if(
         data.type === "short"
@@ -1858,48 +1966,25 @@ async function render() {
 
 
     /*
-       MathJax가 아직 안 왔다면
-       startup 완료 후 다시 실행된다.
+       MathJax
     */
 
     if(
-        !mathJaxReady
+        !window.MathJax
     )
         return;
 
-
     try {
-
-        if(
-            MathJax.typesetClear
-        ) {
-
-            MathJax.typesetClear(
-                [preview]
-            );
-
-        }
 
         await MathJax.typesetPromise(
             [preview]
         );
 
-
-        if(
-            token !== renderNumber
-        )
-            return;
-
     }
     catch(error) {
 
         console.error(
-            "MathJax:",
             error
-        );
-
-        markErrors(
-            preview
         );
 
     }
@@ -1907,172 +1992,9 @@ async function render() {
 }
 
 
-/* =================================================
-   APPEND TEXT + LATEX
-================================================= */
-
-/*
-    핵심 부분.
-
-    일반 텍스트:
-
-        함수 f(x)에 대하여
-
-    그대로 TextNode.
-
-    LaTeX:
-
-        \lim_{x\to0}\frac{...}{...}
-
-    는
-
-        \( \lim_{x\to0}\frac{...}{...} \)
-
-    로 MathJax에게 전달.
-
-    LaTeX 내용 자체는 수정하지 않는다.
-*/
-
-function appendLatexText(
-    container,
-    text
-) {
-
-    const lines =
-        text.split("\n");
-
-
-    lines.forEach(
-        (line,lineIndex) => {
-
-            if(
-                lineIndex > 0
-            ) {
-
-                container.appendChild(
-                    document.createElement(
-                        "br"
-                    )
-                );
-
-            }
-
-
-            const trimmed =
-                line.trim();
-
-
-            /*
-               이미 사용자가
-               \( ... \) 또는 \[...\]
-               를 입력했다면
-               그대로 처리.
-            */
-
-            if(
-                trimmed.startsWith("\\(")
-                ||
-                trimmed.startsWith("\\[")
-                ||
-                trimmed.startsWith("$$")
-            ) {
-
-                const span =
-                    document.createElement(
-                        "span"
-                    );
-
-                span.textContent =
-                    line;
-
-                container.appendChild(
-                    span
-                );
-
-                return;
-
-            }
-
-
-            /*
-               LaTeX 명령을 포함한 줄인지 판단.
-
-               명령을 해석하는 것이 아니라
-               "이 줄을 MathJax에게 줄 것인가?"
-               만 판단한다.
-            */
-
-            const math =
-                /\\[a-zA-Z]+/.test(line)
-                ||
-                /[a-zA-Z0-9]\^|[a-zA-Z0-9]_/.test(line);
-
-
-            if(!math) {
-
-                container.appendChild(
-                    document.createTextNode(
-                        line
-                    )
-                );
-
-                return;
-
-            }
-
-
-            /*
-               수식 부분.
-
-               원본 LaTeX 그대로.
-            */
-
-            const span =
-                document.createElement(
-                    "span"
-                );
-
-            span.textContent =
-                "\\(" +
-                line +
-                "\\)";
-
-            container.appendChild(
-                span
-            );
-
-        }
-    );
-
-}
-
-
-/* =================================================
-   ERRORS
-================================================= */
-
-function markErrors(root) {
-
-    const errors =
-        root.querySelectorAll(
-            "mjx-merror"
-        );
-
-    errors.forEach(
-        e => {
-
-            e.style.color =
-                "#ef4444";
-
-        }
-    );
-
-}
-
-
-/* =================================================
+/* =====================================================
    INSERT
-================================================= */
+===================================================== */
 
 function insert(text) {
 
@@ -2105,65 +2027,32 @@ function insert(text) {
         textarea.selectionEnd =
         start + text.length;
 
-    render();
+    renderPreview();
 
     autoSave();
 
 }
 
 
-/* =================================================
-   EXPORT
-================================================= */
+/* =====================================================
+   ESCAPE
+===================================================== */
 
-function exportData() {
+function escapeHTML(text) {
 
-    save(false);
-
-    const blob =
-        new Blob(
-            [
-                JSON.stringify(
-                    problems,
-                    null,
-                    2
-                )
-            ],
-            {
-                type:
-                    "application/json"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(
-            blob
-        );
-
-    const a =
-        document.createElement(
-            "a"
-        );
-
-    a.href = url;
-
-    a.download =
-        "math-problems.json";
-
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    toast(
-        "파일을 저장했습니다."
-    );
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* =================================================
+/* =====================================================
    DARK
-================================================= */
+===================================================== */
 
 function toggleDark() {
 
@@ -2172,7 +2061,7 @@ function toggleDark() {
     );
 
     localStorage.setItem(
-        "dark",
+        "mathforge-dark",
         document.body.classList.contains(
             "dark"
         )
@@ -2181,72 +2070,41 @@ function toggleDark() {
 }
 
 
-/* =================================================
-   ESCAPE
-================================================= */
-
-function escapeHTML(text) {
-
-    return text
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =================================================
+/* =====================================================
    TOAST
-================================================= */
+===================================================== */
 
 function toast(message) {
 
-    const t =
+    const element =
         document.getElementById(
             "toast"
         );
 
-    t.textContent =
+    element.textContent =
         message;
 
-    t.classList.add(
+    element.classList.add(
         "show"
     );
 
     setTimeout(
         () => {
 
-            t.classList.remove(
+            element.classList.remove(
                 "show"
             );
 
         },
-        1600
+        1500
     );
 
 }
 
 
-/* =================================================
+/* =====================================================
    EVENTS
-================================================= */
+===================================================== */
 
 [
     "number",
@@ -2262,7 +2120,15 @@ function toast(message) {
                 "input",
                 () => {
 
-                    render();
+                    clearTimeout(
+                        renderTimer
+                    );
+
+                    renderTimer =
+                        setTimeout(
+                            renderPreview,
+                            30
+                        );
 
                     autoSave();
 
@@ -2277,17 +2143,18 @@ document
     .getElementById("search")
     .addEventListener(
         "input",
-        list
+        renderList
     );
 
 
-/* =================================================
-   START
-================================================= */
+/* =====================================================
+   DARK INIT
+===================================================== */
 
 if(
-    localStorage.getItem("dark")
-    === "true"
+    localStorage.getItem(
+        "mathforge-dark"
+    ) === "true"
 ) {
 
     document.body.classList.add(
@@ -2295,6 +2162,11 @@ if(
     );
 
 }
+
+
+/* =====================================================
+   START
+===================================================== */
 
 init();
 
